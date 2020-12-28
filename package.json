@@ -12,7 +12,10 @@
     "lint": "npm run lint:js && npm run lint:style"
   },
   "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "husky": "^4.3.6",
     "vue": "^2.6.11"
   },
