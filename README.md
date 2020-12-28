@@ -1,32 +1,41 @@
-# password-manager
+## 🔧 Project setup
 
-## Project setup
+Install dependencies
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+Copy example config
 
 ```
-npm run serve
+cat .env.example > .env
 ```
 
-### Compiles and minifies for production
+and then edit the values in `.env`
+
+## 🚀 Run app in dev mode
+
+Client
 
 ```
-npm run build
+npm run dev:client
 ```
 
-### Lints and fixes files
+Server
+
+```
+npm run dev:server
+```
+
+## 📦 Create production build
+
+```
+npm run build:client
+```
+
+## 🚨 Lint code
 
 ```
 npm run lint
 ```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-[![js @extensionengine style](https://badgen.net/badge/code%20style/@extensionengine/black)](https://github.com/ExtensionEngine/eslint-config)
-[![style @extensionengine style](https://badgen.net/badge/stylelint/@extensionengine/black)](https://github.com/ExtensionEngine/stylelint-config)
