@@ -1,3 +1,5 @@
+# Password Manager
+
 ## 🔧 Project setup
 
 Install dependencies
