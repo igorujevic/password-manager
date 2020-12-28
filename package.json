@@ -2,22 +2,40 @@
   "name": "password-manager",
   "version": "0.1.0",
   "private": true,
+  "main": "server/index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev:client": "vue-cli-service serve",
+    "build:client": "vue-cli-service build",
+    "dev:server": "nodemon ./server",
+    "lint:js": "eslint --ext .js,.vue .",
+    "lint:style": "stylelint \"client/**/*.{vue,css,scss}\"",
+    "lint": "npm run lint:js && npm run lint:style"
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "husky": "^4.3.6",
     "vue": "^2.6.11"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/eslint-plugin": "^7.12.1",
+    "@extensionengine/eslint-config": "^2.0.0",
+    "@extensionengine/stylelint-config": "^1.1.1",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
+    "eslint": "^7.16.0",
+    "eslint-config-semistandard": "^15.0.1",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-require-sort": "^1.2.2",
+    "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "lint-staged": "^10.5.3",
+    "stylelint": "^13.8.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -38,5 +56,14 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./**/*.{js,vue}": "npm run lint:js",
+    "./**/*.{css,scss,vue}": "npm run lint:style"
+  }
 }
