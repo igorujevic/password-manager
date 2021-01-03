@@ -21,6 +21,21 @@ const User = mongoose.model('User', new Schema({
     required: true,
     minlength: 8,
     maxlength: 1024
+  },
+  admin: {
+    type: Boolean
+  },
+  active: {
+    type: Boolean
+  },
+  createdAt: {
+    type: Date
+  },
+  updatedAt: {
+    type: Date
+  },
+  deletedAt: {
+    type: Date
   }
 }));
 

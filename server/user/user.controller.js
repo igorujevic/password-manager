@@ -1,7 +1,8 @@
 'use strict';
 
-const { AUTH_SALT_ROUNDS } = process.env;
+const { AUTH_JWT_SECRET, AUTH_SALT_ROUNDS } = process.env;
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('./user.model');
 
 const round = parseInt(AUTH_SALT_ROUNDS);
@@ -12,14 +13,17 @@ async function register(req, res) {
   // Check if this user already exisits
   const user = await User.findOne({ email });
 
-  if (user) return res.status(400).json({ message: 'Email already taken.' });
+  if (user) return res.status(201).json({ message: 'Unabale to register with this mail. Try another one.' });
 
   const salt = await bcrypt.genSalt(round);
 
   const newUser = new User({
     username,
     email,
-    password: await bcrypt.hash(password, salt)
+    password: await bcrypt.hash(password, salt),
+    admin: true,
+    active: false,
+    createdAt: Date.now()
   });
   await newUser.save();
   return res.status(200).json({
@@ -29,9 +33,24 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-  const result = await bcrypt.compare('user_password', req.body.value);
-  return res.status(202).json({
-    message: result
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(401).json({ message: 'Auth failed!' });
+  const status = await bcrypt.compare(password, user.password);
+  if (!status) return res.status(401).json({ message: 'Auth failed!' });
+  const token = jwt.sign(
+    {
+      id: user._id,
+      email: user.email
+    },
+    AUTH_JWT_SECRET,
+    {
+      expiresIn: '3h'
+    }
+  );
+  return res.status(200).json({
+    message: 'Auth successful!',
+    token
   });
 }
 
