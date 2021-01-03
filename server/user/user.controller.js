@@ -54,7 +54,13 @@ async function login(req, res) {
   });
 }
 
+async function getAll(req, res) {
+  const users = await User.find();
+  return res.send({ users });
+}
+
 module.exports = {
   register,
-  login
+  login,
+  getAll
 };
