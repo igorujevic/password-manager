@@ -3,11 +3,13 @@
 require('dotenv').config();
 const { logger, middleware: logRequests } = require('./shared/logger');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const database = require('./shared/database');
 const express = require('express');
 const helmet = require('helmet');
 const router = require('./router');
 const app = express();
+app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json({ limit: '50mb' }));
 
