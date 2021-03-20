@@ -1,8 +1,30 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view v-if="windowSize > 1024" name="desktop" />
+    <router-view v-else name="mobile" />
   </div>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    windowSize: window.innerWidth
+  }),
+  methods: {
+    onResize() {
+      this.windowSize = window.innerWidth;
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  }
+};
+</script>
 
 <style>
 #app {

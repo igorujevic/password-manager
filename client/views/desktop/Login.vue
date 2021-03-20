@@ -1,11 +1,17 @@
 <template>
   <div>
-    <form @submit.prevent="login" class="login">
-      <h1>Login in</h1>
-      <label>Email</label>
-      <input v-model="email" required type="email" placeholder="Email">
-      <label>Password</label>
-      <input v-model="password" required type="password" placeholder="Password">
+    <h1>Login in</h1>
+    <form @submit.prevent="handleSubmit(login)" class="login">
+      <base-field
+        v-model.trim="email"
+        @focus="clearMessage"
+        type="email"
+        placeholder="Email" />
+      <base-field
+        v-model.trim="password"
+        @focus="clearMessage"
+        type="password"
+        placeholder="Password" />
       <hr>
       <button type="submit">Login</button>
     </form>
@@ -15,9 +21,11 @@
 
 <script>
 import auth from '@/api/auth';
+import BaseField from '../../components/universal/BaseField';
 import { mapActions } from 'vuex';
 
 export default {
+  name: 'login',
   data: () => ({
     email: '',
     password: '',
@@ -26,6 +34,9 @@ export default {
   }),
   methods: {
     ...mapActions('user', ['setToken']),
+    clearMessage() {
+      this.message = '';
+    },
     login() {
       this.isLoading = true;
       auth.login({
@@ -44,6 +55,9 @@ export default {
           this.isLoading = false;
         });
     }
+  },
+  components: {
+    BaseField
   }
 };
 </script>

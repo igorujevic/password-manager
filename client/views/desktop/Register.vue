@@ -1,7 +1,7 @@
 <template>
   <div>
+    <h1>Register</h1>
     <form @submit.prevent="register" class="register">
-      <h1>Register</h1>
       <label>Username</label>
       <input v-model="username" required type="text" placeholder="Username">
       <label>Email</label>
@@ -22,6 +22,7 @@ import auth from '@/api/auth';
 import { mapActions } from 'vuex';
 
 export default {
+  name: 'register',
   data: () => ({
     email: '',
     username: '',

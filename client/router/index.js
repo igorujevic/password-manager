@@ -1,5 +1,6 @@
 import Dashboard from '../views/desktop/Dashboard.vue';
-import Home from '../views/desktop/Home.vue';
+import HomeDekstop from '../views/desktop/Home.vue';
+import HomeMobile from '../views/mobile/Home.vue';
 import Login from '../views/desktop/Login.vue';
 import Register from '../views/desktop/Register.vue';
 import store from '../store';
@@ -12,7 +13,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    components: {
+      desktop: HomeDekstop,
+      mobile: HomeMobile
+    }
   },
   {
     path: '/dashboard',
@@ -25,12 +29,18 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    components: {
+      desktop: Register,
+      mobile: Register
+    }
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    components: {
+      desktop: Login,
+      mobile: Login
+    }
   },
   {
     path: '*',
