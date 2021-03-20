@@ -26,10 +26,23 @@ async function register(req, res) {
     createdAt: Date.now()
   });
   await newUser.save();
+
+  const token = jwt.sign(
+    {
+      id: newUser._id,
+      email: newUser.email
+    },
+    AUTH_JWT_SECRET,
+    {
+      expiresIn: '3h'
+    }
+  );
+
   return res.status(200).json({
     sucess: true,
     message: 'User registered',
-    newUser
+    newUser,
+    token
   });
 }
 
