@@ -11,9 +11,15 @@ const getters = {
 };
 
 const actions = {
+  setToken({ commit }, token) {
+    commit('setToken', token);
+  }
 };
 
 const mutations = {
+  setToken(state, token) {
+    state.token = token;
+  },
   auth_request(state) {
     state.status = 'loading';
   },
