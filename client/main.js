@@ -1,8 +1,15 @@
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import App from './App.vue';
 import Axios from 'axios';
+import { extendRules } from './utils/validation';
 import router from './router';
 import store from './store';
 import Vue from 'vue';
+
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
+
+extendRules();
 
 Vue.config.productionTip = false;
 

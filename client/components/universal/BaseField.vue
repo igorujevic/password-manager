@@ -27,13 +27,16 @@ export default {
       type: String,
       default: ''
     },
+    error: {
+      type: String,
+      default: ''
+    },
     type: {
       type: String,
       default: 'text'
     }
   },
   data: () => ({
-    error: ''
   }),
   components: { BaseInput }
 };

@@ -1,20 +1,35 @@
 <template>
   <div>
     <h1>Login in</h1>
-    <form @submit.prevent="handleSubmit(login)" class="login">
-      <base-field
-        v-model.trim="email"
-        @focus="clearMessage"
-        type="email"
-        placeholder="Email" />
-      <base-field
-        v-model.trim="password"
-        @focus="clearMessage"
-        type="password"
-        placeholder="Password" />
-      <hr>
-      <button type="submit">Login</button>
-    </form>
+    <validation-observer v-slot="{ handleSubmit }">
+      <form @submit.prevent="handleSubmit(login)" class="login">
+        <validation-provider
+          v-slot="{ errors }"
+          name="E-mail"
+          :rules="{ required: true, email: true }"
+          class="">
+          <base-field
+            v-model.trim="email"
+            :error="errors[0]"
+            type="text"
+            placeholder="E-mail" />
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          name="Password"
+          vid="password"
+          :rules="{ required: true, min: { length: 8 } }"
+          class="">
+          <base-field
+            v-model="password"
+            :error="errors[0]"
+            type="password"
+            placeholder="Password" />
+        </validation-provider>
+        <hr>
+        <button type="submit">Login</button>
+      </form>
+    </validation-observer>
     <div v-if="message"> {{ message }} </div>
   </div>
 </template>

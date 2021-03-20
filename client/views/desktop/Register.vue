@@ -1,24 +1,53 @@
 <template>
   <div>
     <h1>Register</h1>
-    <form @submit.prevent="register" class="register">
-      <label>Username</label>
-      <input v-model="username" required type="text" placeholder="Username">
-      <label>Email</label>
-      <input v-model="email" required type="email" placeholder="Name">
-      <label>Password</label>
-      <input v-model="password" required type="password" placeholder="Password">
-      <label>Password</label>
-      <input v-model="repeatPassword" required type="password" placeholder="Repeat password">
-      <hr>
-      <button type="submit">Register</button>
-    </form>
+    <validation-observer v-slot="{ handleSubmit }">
+      <form @submit.prevent="handleSubmit(register)" class="register">
+        <validation-provider
+          v-slot="{ errors }"
+          name="E-mail"
+          :rules="{ required: true, email: true }"
+          class="">
+          <base-field
+            v-model.trim="email"
+            :error="errors[0]"
+            type="text"
+            placeholder="E-mail" />
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          name="Password"
+          vid="password"
+          :rules="{ required: true, min: { length: 8 } }"
+          class="">
+          <base-field
+            v-model="password"
+            :error="errors[0]"
+            type="password"
+            placeholder="Password" />
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          name="Repeat password"
+          :rules="{ required: true, confirmation: { target: '@password' } }"
+          class="mt-xs">
+          <base-field
+            v-model="repeat"
+            :error="errors[0]"
+            type="password"
+            placeholder="Repeat password" />
+        </validation-provider>
+        <hr>
+        <button type="submit">Register</button>
+      </form>
+    </validation-observer>
     <div v-if="message"> {{ message }} </div>
   </div>
 </template>
 
 <script>
 import auth from '@/api/auth';
+import BaseField from '../../components/universal/BaseField';
 import { mapActions } from 'vuex';
 
 export default {
@@ -27,7 +56,7 @@ export default {
     email: '',
     username: '',
     password: '',
-    repeatPassword: '',
+    repeat: '',
     message: '',
     isLoading: false
   }),
@@ -57,6 +86,9 @@ export default {
         });
       }
     }
+  },
+  components: {
+    BaseField
   }
 };
 </script>
