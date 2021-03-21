@@ -2,6 +2,13 @@
   <div class="home">
     <img alt="Vue logo" src="../../assets/logo.png">
     <HelloWorld msg="Welcome to Desktop Vue.js App" />
+    <router-link :to="{ name: 'Login' }" class="">
+      To Login Page
+    </router-link>
+    <br>
+    <router-link :to="{ name: 'Register' }" class="">
+      To Register Page
+    </router-link>
   </div>
 </template>
 

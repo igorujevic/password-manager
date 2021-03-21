@@ -21,7 +21,10 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard,
+    components: {
+      desktop: Dashboard,
+      mobile: Dashboard
+    },
     meta: {
       requiresAuth: true
     }
@@ -59,6 +62,16 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.fullPath === '/' && store.getters['user/isLoggedIn']) {
+    next('/dashboard');
+    return;
+  }
+
+  if ((to.fullPath === '/login' || to.fullPath === '/register') && store.getters['user/isLoggedIn']) {
+    next('/dashboard');
+    return;
+  }
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters['user/isLoggedIn']) {
       next();
