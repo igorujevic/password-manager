@@ -13,7 +13,7 @@ async function register(req, res) {
   // Check if this user already exisits
   const user = await User.findOne({ email });
 
-  if (user) return res.status(201).json({ sucess: false, message: 'Unabale to register with this mail. Try another one.' });
+  if (user) return res.status(400).json({ sucess: false, message: 'Unabale to register with this mail. Try another one.' });
 
   const salt = await bcrypt.genSalt(round);
 
@@ -66,7 +66,13 @@ async function login(req, res) {
   return res.status(200).json({
     sucess: true,
     message: 'Auth successful!',
-    token
+    token,
+    userData: {
+      userId: user._id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt
+    }
   });
 }
 
