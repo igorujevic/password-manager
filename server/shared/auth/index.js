@@ -9,8 +9,8 @@ async function authenticate(req, res, next) {
   if (!token) res.status(401).json({ message: 'Unauthorized!' });
   try {
     const { id } = jwt.verify(token, AUTH_JWT_SECRET);
-    const user = User.findById({ _id: id });
-    req.user = { id: user._id };
+    const user = await User.findById({ _id: id });
+    req.user = { user };
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) return res.status(401).json({ message: 'Token is invalid!' });
