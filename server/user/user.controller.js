@@ -90,8 +90,52 @@ async function getAll(req, res) {
   return res.send({ success: true, users });
 }
 
+async function updateUser(req, res) {
+  // get token from header
+  const token = req.headers.authorization.split(' ')[1];
+  // decode token
+  const decoded = jwt.decode(token, AUTH_JWT_SECRET);
+  // request body
+  const body = req.body;
+
+  const updatedUser = await User.findByIdAndUpdate({ _id: decoded.id }, {
+    username: body.username,
+    email: body.email,
+    updatedAt: Date.now()
+  }, { useFindAndModify: false });
+
+  if (!updatedUser) return res.status(400).send({ sucess: false, message: 'Something went wrong' });
+  else return res.status(201).send(updatedUser);
+}
+
+async function updateUserPassword(req, res) {
+  const salt = await bcrypt.genSalt(round);
+  // get token from header
+  const token = req.headers.authorization.split(' ')[1];
+  if (!token) return res.status(403).send({ success: false, message: 'Forbidden' });
+  // decode token
+  const decoded = jwt.decode(token, AUTH_JWT_SECRET);
+  // find that user
+  const user = await User.findOne({ email: decoded.email });
+
+  const status = await bcrypt.compare(req.body.oldPassword, user.password);
+  if (!status) return res.status(403).json({ sucess: false, message: 'Wrong password' });
+  else {
+    const newPassword = await bcrypt.hash(req.body.newPassword, salt);
+    const updatedUser = await User.findByIdAndUpdate({ _id: decoded.id }, {
+      password: newPassword,
+      updatedAt: Date.now()
+    }, { useFindAndModify: false });
+
+    if (!updatedUser) return res.status(400).send({ sucess: false, message: 'Something went wrong' });
+    else return res.status(201).send({ sucess: true, message: 'Successfully changed password' });
+  }
+}
+
 module.exports = {
   register,
   login,
-  getAll
+  getAll,
+  updateUser,
+  updateUserPassword
 };

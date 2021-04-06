@@ -9,7 +9,9 @@ router
   .post('/register', ctrl.register)
   .post('/login', ctrl.login)
   .use(authenticate)
-  .get('/', ctrl.getAll);
+  .get('/', ctrl.getAll)
+  .put('/', ctrl.updateUser)
+  .put('/password', ctrl.updateUserPassword);
 
 module.exports = {
   path: '/users', router
