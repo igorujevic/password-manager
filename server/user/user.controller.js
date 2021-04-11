@@ -48,7 +48,6 @@ async function register(req, res) {
 
 async function login(req, res) {
   const { email, password } = req.body;
-  console.log(email, password);
   const user = await User.findOne({ email });
   if (!user) return res.status(401).json({ success: false, message: 'Auth failed!' });
   const status = await bcrypt.compare(password, user.password);

@@ -7,6 +7,7 @@ const router = express.Router();
 
 router
   .use(authenticate)
+  .get('/', ctrl.getAll)
   .post('/create', ctrl.create);
 
 module.exports = {
