@@ -24,9 +24,6 @@ const PasswordVault = mongoose.model('PasswordVault', new Schema({
   updatedAt: {
     type: Date
   },
-  deletedAt: {
-    type: Date
-  },
   userId: {
     type: Schema.Types.ObjectId, ref: 'User'
   }

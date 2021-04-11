@@ -9,7 +9,8 @@ router
   .use(authenticate)
   .get('/', ctrl.getAll)
   .post('/create', ctrl.create)
-  .put('/update/:id', ctrl.update);
+  .put('/update/:id', ctrl.update)
+  .delete('/delete/:id', ctrl.deleteOne);
 
 module.exports = {
   path: '/password-vault', router

@@ -91,8 +91,22 @@ async function update(req, res) {
   });
 }
 
+async function deleteOne(req, res) {
+  const { user } = req.user;
+  const paramsId = req.params.id;
+
+  const deletedPasswordVault = await PasswordVault.findOneAndDelete({ _id: paramsId, userId: user._id });
+
+  return res.status(200).json({
+    sucess: true,
+    message: 'Password Vault deleted successfully',
+    deletedPasswordVault
+  });
+}
+
 module.exports = {
   create,
   getAll,
-  update
+  update,
+  deleteOne
 };
