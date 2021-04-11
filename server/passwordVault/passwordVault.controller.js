@@ -21,10 +21,13 @@ async function create(req, res) {
   const token = authHeader && authHeader.split(' ')[0] && authHeader.split(' ')[1];
   if (!token) res.status(401).json({ message: 'Unauthorized!' });
 
+  // encrypt
+  const encryptedPassword = await CryptoJS.AES.encrypt(password, key512Bits1000Iterations.toString());
+
   const newPasswordVault = new PasswordVault({
     pageUrl,
     name,
-    password: await CryptoJS.AES.encrypt(password, key512Bits1000Iterations.toString()), // encrypt
+    password: encryptedPassword.toString(),
     userId: user._id,
     createdAt: Date.now()
   });
@@ -39,10 +42,6 @@ async function create(req, res) {
 }
 
 async function getAll(req, res) {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[0] && authHeader.split(' ')[1];
-  if (!token) res.status(401).json({ message: 'Unauthorized!' });
-
   // get user id from saved user in req
   const { user } = req.user;
   const key512Bits1000Iterations = CryptoJS.PBKDF2(AUTH_JWT_SECRET, user.username, {
@@ -66,7 +65,34 @@ async function getAll(req, res) {
   });
 }
 
+async function update(req, res) {
+  const { user } = req.user;
+  const paramsId = req.params.id;
+  const body = req.body;
+  const key512Bits1000Iterations = CryptoJS.PBKDF2(AUTH_JWT_SECRET, user.username, {
+    keySize: 512 / 32,
+    iterations: 1000
+  });
+
+  // encrypt
+  const newPassword = await CryptoJS.AES.encrypt(body.password, key512Bits1000Iterations.toString());
+
+  const updatedPasswordVault = await PasswordVault.findOneAndUpdate({ _id: paramsId, userId: user._id }, {
+    pageUrl: body.pageUrl,
+    name: body.name,
+    password: newPassword.toString(),
+    updatedAt: Date.now()
+  }, { new: true, useFindAndModify: false });
+
+  return res.status(200).json({
+    sucess: true,
+    message: 'Password Vault updated successfully',
+    updatedPasswordVault
+  });
+}
+
 module.exports = {
   create,
-  getAll
+  getAll,
+  update
 };
