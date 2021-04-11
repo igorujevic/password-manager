@@ -11,9 +11,11 @@ async function register(req, res) {
   const { username, email, password } = req.body;
 
   // Check if this user already exisits
-  const user = await User.findOne({ email });
-
-  if (user) return res.status(400).json({ sucess: false, message: 'Unabale to register with this mail. Try another one.' });
+  const userUniqueEmail = await User.findOne({ email });
+  if (userUniqueEmail) return res.status(400).json({ sucess: false, message: 'Unabale to register with this mail. Email needs to be unique. Try another one.' });
+  // Check if this user already exisits
+  const userUniqueUsername = await User.findOne({ username });
+  if (userUniqueUsername) return res.status(400).json({ sucess: false, message: 'Unabale to register with this username. Username needs to be unique. Try another one.' });
 
   const salt = await bcrypt.genSalt(round);
 
