@@ -1,5 +1,5 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
-import App from './App.vue';
+import App from './App';
 import Axios from 'axios';
 import { extendRules } from './utils/validation';
 import router from './router';
