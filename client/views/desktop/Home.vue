@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <div>
-      content
+    <div class="first-section">
     </div>
     <div class="bottom-cards">
       <LearnMoreCard />

@@ -23,7 +23,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.3.1",
-    "husky": "^4.3.6",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.9",
     "morgan": "^1.10.0",
@@ -75,14 +74,5 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "./**/*.{js,vue}": "npm run lint:js",
-    "./**/*.{css,scss,vue}": "npm run lint:style"
-  }
+  ]
 }
