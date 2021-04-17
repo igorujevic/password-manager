@@ -35,6 +35,10 @@ export default {
     height: 190px;
     overflow: hidden;
 
+    @media screen and (min-width: 1300px) {
+        min-width: 190px;
+      }
+
     img {
        width: 100%;
       height: 100%;
@@ -54,6 +58,10 @@ export default {
 
     p{
       margin-bottom: 35px;
+
+      @media screen and (max-width: 1225px) {
+        margin-bottom: 25px;
+      }
     }
 
     a {

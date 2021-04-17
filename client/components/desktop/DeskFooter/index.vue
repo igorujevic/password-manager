@@ -94,14 +94,14 @@ export default {
 
   &-content {
     display: flex;
-    flex-direction: column;
     width: calc(100% - 160px);
     max-width: 1200px;
     margin: 0 auto;
-    padding: 112.5px 80px 15px;
+    padding: 15px 80px 15px;
 
     div:first-of-type {
       margin-bottom: 10px;
+      margin-right: 100px;
     }
 
     .links-holder {

@@ -10,6 +10,16 @@
       </div>
       <img class="first-section-img" src="../../assets/images/undraw_Safe_re_kiil.svg" alt="work-img">
     </div>
+    <div class="second-section">
+      <img class="second-section-img" src="../../assets/images/undraw_Portfolio_re_qwm5.svg" alt="work-img">
+      <div class="second-section-text">
+        <h1>How it works?</h1>
+        <p>
+          Secure, orchestrate, and manage your company's infrastructure secrets with 1Password Secrets Automation.
+        </p>
+        <a href="/">Find out more</a>
+      </div>
+    </div>
     <div class="bottom-cards">
       <LearnMoreCard />
       <LearnMoreCard />
@@ -38,9 +48,10 @@ export default {
   width: calc(100% - 160px);
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 80px 200px;
+  padding: 40px 80px 40px;
   position: relative;
 
+  // first section
   .first-section {
     display: flex;
     justify-content: space-between;
@@ -49,7 +60,7 @@ export default {
     position: relative;
 
     &-text {
-      width: calc(100% - 550px);
+      margin-right: 25px;
       max-width: 515px;
       display: flex;
       flex-direction: column;
@@ -97,29 +108,83 @@ export default {
 
     &-img {
       width: 550px;
-      position: absolute;
-      top: 0;
-      right: 0;
-      z-index: 1;
       @media screen and (max-width: 1150px) {
-        max-height: 500px;
+        max-width: 500px;
+      }
+    }
+  }
+
+  // second section
+  .second-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 55px;
+    position: relative;
+
+    &-text {
+      margin-left: 25px;
+      max-width: 515px;
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        font-size: 45px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: $primaryColor;
+        @media screen and (max-width: 1150px) {
+          font-size: 35px;
+        }
+        @media screen and (min-width: 1500px) {
+          font-size: 50px;
+        }
+      }
+      p{
+        font-size: 20px;
+        text-align: justify;
+        margin-bottom: 32px;
+        @media screen and (min-width: 1500px) {
+          font-size: 25px;
+        }
+      }
+      a{
+        @media screen and (min-width: 1025px) {
+          cursor: pointer;
+        }
+        width: fit-content;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 10px 25px;
+        border-radius: 10px;
+        border: 1px solid $primaryColor;
+        color: $primaryColor;
+        transition: 0.25s ease;
+
+        &:hover {
+          color: $white;
+          background: $primaryColor;
+        }
+      }
+    }
+
+    &-img {
+      width: 450px;
+      margin-right: 20px;
+      @media screen and (max-width: 1150px) {
+        max-width: 400px;
       }
     }
   }
 
   .bottom-cards {
-    position: absolute;
-    bottom: 0;
-    transform: translateY(50%);
     display: flex;
+    justify-content: space-between;
 
     .learn-more-card {
       &:first-of-type {
         margin-right: 10px;
-      }
-
-      &:last-of-type {
-        margin-right: 80px;
       }
     }
   }
