@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="desk-login container">
     <h1>Login in</h1>
     <validation-observer v-slot="{ handleSubmit }">
-      <form @submit.prevent="handleSubmit(login)" class="login">
+      <form @submit.prevent="handleSubmit(login)" class="eager">
         <validation-provider
           v-slot="{ errors }"
+          mode="eager"
           name="E-mail"
           :rules="{ required: true, email: true }"
           class="">
@@ -16,6 +17,7 @@
         </validation-provider>
         <validation-provider
           v-slot="{ errors }"
+          mode="eager"
           name="Password"
           vid="password"
           :rules="{ required: true, min: { length: 8 } }"
@@ -59,7 +61,7 @@ export default {
         password: this.password
       })
         .then(({ data }) => {
-          localStorage.setItem('token', data.token);
+          // localStorage.setItem('token', data.token);
           this.setToken(data.token);
           this.$router.push({ name: 'Dashboard' });
         })

@@ -16,9 +16,7 @@
           Route 1
         </router-link>
         <br>
-        <router-link :to="{ name: 'Home' }" class="header-nav-link">
-          Route 2
-        </router-link>
+        <button @click="logout">Logout</button>
       </div>
     </div>
   </div>
@@ -26,8 +24,8 @@
 
 <script>
 // @ is an alias to /src
+import { mapActions, mapGetters } from 'vuex';
 import Logo from '@/assets/logo.png';
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'desk-header',
@@ -39,6 +37,7 @@ export default {
     ...mapGetters('user', ['isLoggedIn'])
   },
   methods: {
+    ...mapActions('user', ['logoutUser']),
     toHome() {
       if (this.isLoggedIn) this.$router.push({ name: 'Dashboard' }).catch(() => {});
       else this.$router.push({ name: 'Home' }).catch(() => {});
@@ -46,6 +45,10 @@ export default {
     changeOnlyLogo() {
       if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.onlyLogo = true;
       else this.onlyLogo = false;
+    },
+    logout() {
+      this.logoutUser();
+      this.$router.push({ name: 'Login' });
     }
   },
   watch: {

@@ -24,5 +24,7 @@ module.exports = {
       }
     },
     devtool: 'source-map'
-  })
+  }),
+  /* ... other config ... */
+  transpileDependencies: ['vuex-persist']
 };

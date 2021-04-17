@@ -12,6 +12,9 @@ const getters = {
 const actions = {
   setToken({ commit }, token) {
     commit('setToken', token);
+  },
+  logoutUser({ commit }) {
+    commit('logout');
   }
 };
 
