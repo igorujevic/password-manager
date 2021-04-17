@@ -1,5 +1,5 @@
 <template>
-  <div class="desk-footer">
+  <div v-show="showFooter" class="desk-footer">
     <div class="desk-footer-content">
       <div class="links-holder">
         <p>Password Manager:</p>
@@ -58,12 +58,15 @@
 
 <script>
 // @ is an alias to /src
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'desk-footer',
   data: () => ({
+    showFooter: true
   }),
   computed: {
+    ...mapGetters('user', ['isLoggedIn'])
   },
   methods: {
     toHome() {
@@ -71,13 +74,19 @@ export default {
       else this.$router.push({ name: 'Home' }).catch(() => {});
     },
     changeOnlyLogo() {
-      if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.onlyLogo = true;
-      else this.onlyLogo = false;
+      if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.showFooter = false;
+      else this.showFooter = true;
     }
   },
   watch: {
+    $route(to, _) {
+      if (['/login', '/register'].includes(to.path)) this.showFooter = false;
+      else this.showFooter = true;
+    }
   },
   created() {
+    if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.showFooter = false;
+    else this.showFooter = true;
   }
 };
 </script>
