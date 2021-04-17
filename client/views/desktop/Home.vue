@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home {
   width: calc(100% - 160px);
   height: 100%;

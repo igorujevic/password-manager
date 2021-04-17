@@ -1,15 +1,17 @@
 <template>
   <div id="app">
-    <DeskHeader />
-    <div :class="windowSize > 1024 ? 'desktop-layout' : 'mobile-layout'">
-      <router-view v-if="windowSize > 1024" name="desktop" />
-      <router-view v-else name="mobile" />
-    </div>
+    <template v-if="windowSize > 1024">
+      <DesktopLayout />
+    </template>
+    <template v-else>
+      <MobileLayout />
+    </template>
   </div>
 </template>
 
 <script>
-import DeskHeader from '@/components/desktop/DeskHeader.vue';
+import DesktopLayout from './DesktopLayout';
+import MobileLayout from './MobileLayout';
 
 export default {
   data: () => ({
@@ -29,7 +31,8 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   components: {
-    DeskHeader
+    DesktopLayout,
+    MobileLayout
   }
 };
 </script>
