@@ -75,6 +75,7 @@ export default {
   width: calc(100% - 60px);
   height: calc(70px - 1px - 20px);
   padding: 10px 30px;
+  background: $white;
   border-bottom: 1px solid $lightGrey;
   box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
 

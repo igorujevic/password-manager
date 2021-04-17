@@ -122,6 +122,11 @@ export default {
             color: $lightPrimaryColorFont;
             cursor: pointer;
             text-decoration: none;
+            transition: 0.25s ease;
+
+            &:hover {
+              color: $white;
+            }
           }
         }
       }
@@ -161,6 +166,11 @@ export default {
       .icon {
         color: $lightPrimaryColorFont;
         font-size: 1.5rem;
+        transition: 0.25s ease;
+
+        &:hover {
+          color: $white;
+        }
       }
     }
   }
