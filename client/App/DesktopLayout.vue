@@ -2,15 +2,18 @@
   <div id="desktop-layout">
     <DeskHeader />
     <router-view name="desktop" />
+    <DeskFooter />
   </div>
 </template>
 
 <script>
-import DeskHeader from '@/components/desktop/DeskHeader.vue';
+import DeskFooter from '@/components/desktop/DeskFooter';
+import DeskHeader from '@/components/desktop/DeskHeader';
 
 export default {
   name: 'desktop-layout',
   components: {
+    DeskFooter,
     DeskHeader
   }
 };

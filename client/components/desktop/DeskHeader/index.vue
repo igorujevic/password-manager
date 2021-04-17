@@ -1,6 +1,6 @@
 <template>
   <div class="desk-header">
-    <img @click="toHome" class="logo" alt="Vue logo" src="../../assets/logo.png">
+    <img @click="toHome" class="logo" alt="Vue logo" :src="logo">
     <div v-show="!onlyLogo">
       <div v-if="!isLoggedIn" class="header-nav not-logged-in">
         <router-link :to="{ name: 'Login' }" class="header-nav-link">
@@ -26,12 +26,14 @@
 
 <script>
 // @ is an alias to /src
+import Logo from '@/assets/logo.png';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'desk-header',
   data: () => ({
-    onlyLogo: false
+    onlyLogo: false,
+    logo: Logo
   }),
   computed: {
     ...mapGetters('user', ['isLoggedIn'])
@@ -60,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/stylesheets/_variables";
+@import "../../../assets/stylesheets/_variables";
 
 .desk-header {
   display: flex;
