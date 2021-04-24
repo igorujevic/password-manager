@@ -2,7 +2,7 @@
   <div class="desk-login container">
     <h1>Login in</h1>
     <validation-observer v-slot="{ handleSubmit }">
-      <form @submit.prevent="handleSubmit(login)" class="eager">
+      <form @submit.prevent="handleSubmit(login)" class="eager form-container">
         <validation-provider
           v-slot="{ errors }"
           mode="eager"
@@ -26,10 +26,16 @@
             v-model="password"
             :error="errors[0]"
             type="password"
+            class="last-input"
             placeholder="Password" />
         </validation-provider>
-        <hr>
-        <button type="submit">Login</button>
+        <base-button
+          type="submit"
+          :text="isLoading ? 'Loading' : 'Login'"
+          class="login-btn"
+          :icon="isLoading ? 'fa fa-spinner fa-spin' : null"
+          primary
+          rounded />
       </form>
     </validation-observer>
     <div v-if="message"> {{ message }} </div>
@@ -38,6 +44,7 @@
 
 <script>
 import auth from '@/api/auth';
+import BaseButton from '../../components/universal/BaseButton';
 import BaseField from '../../components/universal/BaseField';
 import { mapActions } from 'vuex';
 
@@ -74,7 +81,44 @@ export default {
     }
   },
   components: {
+    BaseButton,
     BaseField
   }
 };
 </script>
+
+<style lang="scss">
+@import "../../assets/stylesheets/_variables";
+
+.desk-login.container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    margin-top: 50px;
+    margin-bottom: 25px;
+    color: $primaryColor;
+  }
+
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .last-input {
+      margin-bottom: 15px;
+    }
+  }
+
+  .login-btn {
+    max-width: 100%;
+  }
+}
+
+</style>

@@ -23,3 +23,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.input {
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+</style>
