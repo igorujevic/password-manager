@@ -1,7 +1,9 @@
 <template>
   <button v-on="$listeners" :class="{ primary, rounded }" class="button">
     <div class="button-container">
-      <span v-if="icon" :class="icon" class="icon mr-s"></span>
+      <span v-if="showIcon(icon)" class="icon mr-s">
+        <i :class="icon"></i>
+      </span>
       <span class="text">{{ text }}</span>
     </div>
   </button>
@@ -26,6 +28,11 @@ export default {
     text: {
       type: String,
       required: true
+    }
+  },
+  methods: {
+    showIcon(icon) {
+      return !!icon;
     }
   }
 };
@@ -70,7 +77,7 @@ export default {
   &:hover {
     background-color: $white;
 
-    .text {
+    .icon, .text {
       color: $primaryColor;
     }
   }

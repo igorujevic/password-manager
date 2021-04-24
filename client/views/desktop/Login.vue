@@ -33,7 +33,7 @@
           type="submit"
           :text="isLoading ? 'Loading' : 'Login'"
           class="login-btn"
-          :icon="isLoading ? 'fa fa-spinner fa-spin' : null"
+          :icon="isLoading ? 'fa fa-spinner fa-spin' : ''"
           primary
           rounded />
       </form>
