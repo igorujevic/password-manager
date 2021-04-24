@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="desk-register container">
     <h1>Register</h1>
     <validation-observer v-slot="{ handleSubmit }">
-      <form @submit.prevent="handleSubmit(register)" class="register">
+      <form @submit.prevent="handleSubmit(register)" class="eager form-container">
         <validation-provider
           v-slot="{ errors }"
           name="E-mail"
@@ -38,7 +38,13 @@
             placeholder="Repeat password" />
         </validation-provider>
         <hr>
-        <button type="submit">Register</button>
+        <base-button
+          type="submit"
+          :text="isLoading ? 'Loading' : 'Register'"
+          class="register-btn"
+          :icon="isLoading ? 'fa fa-spinner fa-spin' : null"
+          primary
+          rounded />
       </form>
     </validation-observer>
     <div v-if="message"> {{ message }} </div>
@@ -47,6 +53,7 @@
 
 <script>
 import auth from '@/api/auth';
+import BaseButton from '../../components/universal/BaseButton';
 import BaseField from '../../components/universal/BaseField';
 import { mapActions } from 'vuex';
 
@@ -88,7 +95,44 @@ export default {
     }
   },
   components: {
+    BaseButton,
     BaseField
   }
 };
 </script>
+
+<style lang="scss">
+@import "../../assets/stylesheets/_variables";
+
+.desk-register.container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    margin-top: 50px;
+    margin-bottom: 25px;
+    color: $primaryColor;
+  }
+
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .last-input {
+      margin-bottom: 15px;
+    }
+  }
+
+  .register-btn {
+    max-width: 100%;
+  }
+}
+
+</style>
