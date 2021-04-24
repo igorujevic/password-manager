@@ -13,7 +13,7 @@
       </div>
       <div v-else class="header-nav logged-in">
         <router-link :to="{ name: 'Home' }" class="header-nav-link">
-          Route 1
+          Account
         </router-link>
         <br>
         <button @click="logout">Logout</button>
@@ -137,6 +137,41 @@ export default {
         color: $white;
         background: $primaryColor;
         box-shadow: 0 15px 10px -15px $black;
+      }
+    }
+  }
+
+  .header-nav.logged-in {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+
+    .header-nav-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      margin-right: 10px;
+
+      &:hover {
+        color: $primaryColor;
+      }
+    }
+
+    button {
+      background: $primaryColor;
+      border: 1px solid $primaryColor;
+      padding: 5px;
+      border-radius: 10px;
+      color: $white;
+      cursor: pointer;
+      transition: 0.25s ease;
+
+      &:hover {
+        box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+        background: $white;
+        color: $primaryColor;
       }
     }
   }
