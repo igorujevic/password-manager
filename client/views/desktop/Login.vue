@@ -11,6 +11,7 @@
           class="">
           <base-field
             v-model.trim="email"
+            @focus="clearMessage"
             :error="errors[0]"
             type="text"
             placeholder="E-mail" />
@@ -24,6 +25,7 @@
           class="">
           <base-field
             v-model="password"
+            @focus="clearMessage"
             :error="errors[0]"
             type="password"
             class="last-input"
@@ -38,7 +40,7 @@
           rounded />
       </form>
     </validation-observer>
-    <div v-if="message"> {{ message }} </div>
+    <div v-if="message" class="login-error-message"> {{ message }} </div>
   </div>
 </template>
 
@@ -72,8 +74,10 @@ export default {
           this.setToken(data.token);
           this.$router.push({ name: 'Dashboard' });
         })
-        .catch(({ status, data: { error } }) => {
-          this.message = status >= 400 && status < 500 ? error : 'Something went wrong. Try again.';
+        .catch(({ status, data: { message } }) => {
+          this.message = status >= 400 && status < 500 ? `${message} Wrong email or password.` : 'Something went wrong. Try again.';
+          console.log(this.message);
+          console.log(status);
         })
         .finally(() => {
           this.isLoading = false;
@@ -118,6 +122,11 @@ export default {
 
   .login-btn {
     max-width: 100%;
+  }
+
+  .login-error-message {
+    margin: 20px 0px;
+    color: $error;
   }
 }
 
