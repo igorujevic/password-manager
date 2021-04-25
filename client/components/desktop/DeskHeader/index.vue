@@ -74,7 +74,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99999;
+  z-index: 999;
   width: calc(100% - 60px);
   height: calc(70px - 1px - 20px);
   padding: 10px 30px;
@@ -153,6 +153,7 @@ export default {
       align-items: center;
       text-decoration: none;
       margin-right: 10px;
+      font-size: 16px;
 
       &:hover {
         color: $primaryColor;
@@ -167,6 +168,7 @@ export default {
       color: $white;
       cursor: pointer;
       transition: 0.25s ease;
+      font-size: 16px;
 
       &:hover {
         box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);

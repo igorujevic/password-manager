@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <template v-if="windowSize > 1024">
+      <notifications position="top right" classes="my-notification" />
       <DesktopLayout />
     </template>
     <template v-else>

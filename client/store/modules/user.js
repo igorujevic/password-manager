@@ -6,6 +6,7 @@ const state = {
 
 const getters = {
   isLoggedIn: state => !!state.token,
+  authToken: state => state.token,
   userData: state => state.user
 };
 

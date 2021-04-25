@@ -31,6 +31,13 @@ const rules = [
       validate: (value, { target }) => value === target,
       message: 'Passwords must match'
     }
+  },
+  {
+    name: 'url',
+    rule: {
+      validate: value => /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/.test(value),
+      message: 'Invalid page url format. e.g. https://www.google.com'
+    }
   }
 ];
 

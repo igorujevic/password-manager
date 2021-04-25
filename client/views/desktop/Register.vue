@@ -37,7 +37,6 @@
             type="password"
             placeholder="Repeat password" />
         </validation-provider>
-        <hr>
         <base-button
           type="submit"
           :text="isLoading ? 'Loading' : 'Register'"
@@ -80,7 +79,6 @@ export default {
           password: this.password
         })
         .then(({ data }) => {
-          console.log(data);
           localStorage.setItem('token', data.token);
           this.setToken(data.token);
           this.$router.push({ name: 'Dashboard' });
