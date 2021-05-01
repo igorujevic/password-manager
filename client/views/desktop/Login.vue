@@ -72,12 +72,15 @@ export default {
         .then(({ data }) => {
           // localStorage.setItem('token', data.token);
           this.setToken(data.token);
+          this.$notify({
+            type: 'success',
+            text: 'You are logged in.',
+            duration: 3000
+          });
           this.$router.push({ name: 'Dashboard' });
         })
-        .catch(({ status, data: { message } }) => {
-          this.message = status >= 400 && status < 500 ? `${message} Wrong email or password.` : 'Something went wrong. Try again.';
-          console.log(this.message);
-          console.log(status);
+        .catch(({ response: { data, status } }) => {
+          this.message = status >= 400 && status < 500 ? `${data.message} Wrong email or password.` : 'Something went wrong. Try again.';
         })
         .finally(() => {
           this.isLoading = false;
@@ -92,7 +95,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../assets/stylesheets/_variables";
+@import "../../assets/stylesheets/variables";
 
 .desk-login.container {
   display: flex;

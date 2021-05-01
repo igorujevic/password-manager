@@ -48,6 +48,11 @@ export default {
     },
     logout() {
       this.logoutUser();
+      this.$notify({
+        type: 'success',
+        text: 'You are logged out.',
+        duration: 3000
+      });
       this.$router.push({ name: 'Login' });
     }
   },

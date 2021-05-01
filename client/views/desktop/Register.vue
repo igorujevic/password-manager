@@ -5,6 +5,7 @@
       <form @submit.prevent="handleSubmit(register)" class="eager form-container">
         <validation-provider
           v-slot="{ errors }"
+          mode="eager"
           name="E-mail"
           :rules="{ required: true, email: true }"
           class="">
@@ -16,6 +17,7 @@
         </validation-provider>
         <validation-provider
           v-slot="{ errors }"
+          mode="eager"
           name="Password"
           vid="password"
           :rules="{ required: true, min: { length: 8 } }"
@@ -28,6 +30,7 @@
         </validation-provider>
         <validation-provider
           v-slot="{ errors }"
+          mode="eager"
           name="Repeat password"
           :rules="{ required: true, confirmation: { target: '@password' } }"
           class="mt-xs">
@@ -46,7 +49,7 @@
           rounded />
       </form>
     </validation-observer>
-    <div v-if="message"> {{ message }} </div>
+    <div v-if="message" class="register-error-message"> {{ message }} </div>
   </div>
 </template>
 
@@ -54,13 +57,13 @@
 import auth from '@/api/auth';
 import BaseButton from '../../components/universal/BaseButton';
 import BaseField from '../../components/universal/BaseField';
+import { generateRandomString } from '../../helpers/functions';
 import { mapActions } from 'vuex';
 
 export default {
   name: 'register',
   data: () => ({
     email: '',
-    username: '',
     password: '',
     repeat: '',
     message: '',
@@ -69,22 +72,27 @@ export default {
   methods: {
     ...mapActions('user', ['setToken']),
     register() {
-      if (this.password !== this.repeatPassword) {
+      if (this.password !== this.repeat) {
         this.message = 'Repeat password correctly';
       } else {
         this.isLoading = true;
         auth.register({
           email: this.email,
-          username: this.username,
+          username: `${this.email.split('@')[0]}-${generateRandomString(8)}`,
           password: this.password
         })
         .then(({ data }) => {
           localStorage.setItem('token', data.token);
           this.setToken(data.token);
+          this.$notify({
+            type: 'success',
+            text: 'Welcome!!',
+            duration: 3000
+          });
           this.$router.push({ name: 'Dashboard' });
         })
-        .catch(({ status, data: { error } }) => {
-          this.message = status >= 400 && status < 500 ? error : 'Something went wrong. Try again.';
+        .catch(({ response: { data, status } }) => {
+          this.message = status >= 400 && status < 500 ? `${data.message}` : 'Something went wrong. Try again.';
         })
         .finally(() => {
           this.isLoading = false;
@@ -100,7 +108,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../assets/stylesheets/_variables";
+@import "../../assets/stylesheets/variables";
 
 .desk-register.container {
   display: flex;
@@ -130,6 +138,11 @@ export default {
 
   .register-btn {
     max-width: 100%;
+  }
+
+  .register-error-message {
+    margin: 20px 0px;
+    color: $error;
   }
 }
 
