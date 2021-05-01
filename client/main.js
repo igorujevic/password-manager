@@ -14,6 +14,7 @@ Vue.component('ValidationObserver', ValidationObserver);
 extendRules();
 
 Vue.use(VModal);
+// types: success, warn, error
 Vue.use(Notifications);
 
 Vue.config.productionTip = false;
