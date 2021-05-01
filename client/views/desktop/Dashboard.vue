@@ -63,7 +63,16 @@
       </div>
     </modal>
     <div class="all-password-vaults-container">
-      all password vaults
+      <h2>Your passwords:</h2>
+      <div v-if="loadPasswords" class="no-content-wrapper">
+        <loader />
+      </div>
+      <div v-else class="passwords-container">
+        <div v-if="!allPasswords.length">no saved passwords</div>
+        <ul v-else class="list">
+          <password-vault-card v-for="pv in allPasswords" :key="pv._id" :data="pv" />
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -72,17 +81,21 @@
 // @ is an alias to /src
 import BaseButton from '../../components/universal/BaseButton';
 import BaseField from '../../components/universal/BaseField';
+import Loader from '../../components/universal/Loader';
 import { mapGetters } from 'vuex';
 import passwordVault from '@/api/passwordVault';
+import PasswordVaultCard from '../../components/desktop/PasswordVaultCard';
 
 export default {
-  name: 'home',
+  name: 'dashboard',
   data: () => ({
     isLoading: false,
     message: '',
     pageUrl: '',
     name: '',
-    password: ''
+    password: '',
+    loadPasswords: true,
+    allPasswords: []
   }),
   computed: {
     ...mapGetters('user', ['authToken'])
@@ -109,8 +122,12 @@ export default {
         this.name = '';
         this.password = '';
       })
-      .catch(error => {
-        console.log(error);
+      .catch(() => {
+        this.$notify({
+          type: 'success',
+          text: 'Something went wrong! Try later.',
+          duration: 3000
+        });
       })
       .finally(() => {
         this.isLoading = false;
@@ -124,15 +141,38 @@ export default {
       this.$modal.hide('create-pv-modal');
     }
   },
+  async mounted() {
+    passwordVault.getAll({
+      headers: {
+        Authorization: `Bearer ${this.authToken}`
+      }
+    })
+    .then(({ data }) => {
+      this.allPasswords = data.passwords;
+    })
+    .catch(() => {
+      this.$notify({
+        type: 'error',
+        text: 'Something went wrong while loading data! Try later or contact us.',
+        duration: 5000
+      });
+    })
+    .finally(() => {
+      this.loadPasswords = false;
+    });
+  },
   components: {
     BaseButton,
-    BaseField
+    BaseField,
+    Loader,
+    PasswordVaultCard
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/stylesheets/_variables';
+@import '@/assets/stylesheets/variables';
+@import '@/assets/stylesheets/animations';
 
 .dashboard {
   width: calc(100% - 160px);
@@ -189,6 +229,34 @@ export default {
         max-width: 600px !important;
         width: 100%;
       }
+    }
+  }
+
+  .all-password-vaults-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+
+    .no-content-wrapper {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+    }
+
+    .list {
+      -webkit-animation: fadeIn 0.25s ease forwards;
+      animation: fadeIn 0.25s ease forwards;
+      display: grid;
+      /* define the number of grid columns */
+      grid-template-columns: repeat( auto-fit, minmax(380px, 1fr) );
+      gap: 10px;
     }
   }
 }
