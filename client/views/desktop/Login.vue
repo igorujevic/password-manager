@@ -70,7 +70,6 @@ export default {
         password: this.password
       })
         .then(({ data }) => {
-          // localStorage.setItem('token', data.token);
           this.setToken(data.token);
           this.$notify({
             type: 'success',

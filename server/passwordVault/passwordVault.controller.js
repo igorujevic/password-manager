@@ -49,7 +49,7 @@ async function getAll(req, res) {
     iterations: 1000
   });
 
-  const passwords = await PasswordVault.find({ userId: user._id });
+  const passwords = await PasswordVault.find({ userId: user._id }).sort({ createdAt: 'desc' });
 
   const newArray = [];
   passwords.forEach(async element => {

@@ -3,6 +3,9 @@
     <div class="password-vault-card-header">
       <p> {{ data.name }} </p>
       <span> {{ createdAt }} </span>
+      <div @click.stop="deletePasswordVault" class="delete-icon">
+        <span class="fas fa-trash-alt"></span>
+      </div>
     </div>
     <div class="password-vault-card-body">
       <div class="page-url">
@@ -29,6 +32,8 @@
 <script>
 // @ is an alias to /src
 import { convertISOToDate } from '../../../helpers/functions';
+import { mapGetters } from 'vuex';
+import passwordVault from '@/api/passwordVault';
 
 export default {
   name: 'password-vault-card',
@@ -43,6 +48,7 @@ export default {
     show: false
   }),
   computed: {
+    ...mapGetters('user', ['authToken']),
     // a computed getter
     createdAt: function () {
       return convertISOToDate(this.data.createdAt);
@@ -56,6 +62,26 @@ export default {
     showHidePassword() {
       if (this.show) this.show = false;
       else this.show = true;
+    },
+    deletePasswordVault() {
+      passwordVault.deleteOne(this.data._id, {
+        headers: {
+          Authorization: `Bearer ${this.authToken}`
+        }
+      }).then(() => {
+        this.$emit('passwordVaultDeleted', this.data._id);
+        this.$notify({
+          type: 'success',
+          text: `${this.data.name} deleted.`,
+          duration: 3000
+        });
+      }).catch(() => {
+        this.$notify({
+          type: 'error',
+          text: 'Error while trying to delete.',
+          duration: 3000
+        });
+      });
     }
   },
   mounted() {
@@ -83,21 +109,38 @@ export default {
 }
 
   &-header {
-    width: fit-content;
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    position: relative;
 
     P {
+      width: calc(100% - 30px);
       color: $primaryFontColor;
       font-size: 24px;
       margin-bottom: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     span {
       font-size: 12px;
       color:  lighten($primaryFontColor, 30%) ;
     }
+
+    .delete-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 24px;
+      color: $primaryFontColor;
+      transition: 0.25s ease;
+
+      &:hover {
+        color: $error;
+      }
+  }
   }
 
   &-body {
@@ -120,6 +163,7 @@ export default {
     }
 
     .password {
+      width: 100%;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -138,6 +182,11 @@ export default {
         p:first-of-type {
           color: $black;
           font-size: 20px;
+        }
+
+        p:last-of-type {
+          width: calc(100% - 30px);
+          word-break: break-all;
         }
       }
 
