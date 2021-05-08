@@ -8,6 +8,7 @@ const router = express.Router();
 router
   .post('/register', ctrl.register)
   .post('/login', ctrl.login)
+  .get('/verify', ctrl.verify)
   .use(authenticate)
   .get('/', ctrl.getAll)
   .put('/', ctrl.updateUser)
