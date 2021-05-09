@@ -12,7 +12,7 @@
         </router-link>
       </div>
       <div v-else class="header-nav logged-in">
-        <router-link :to="{ name: 'Home' }" class="header-nav-link">
+        <router-link :to="{ name: 'Account' }" class="header-nav-link">
           Account
         </router-link>
         <br>

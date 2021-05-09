@@ -16,6 +16,9 @@ const actions = {
   },
   logoutUser({ commit }) {
     commit('logout');
+  },
+  saveUserData({ commit }, userData) {
+    commit('saveUserData', userData);
   }
 };
 
@@ -26,6 +29,9 @@ const mutations = {
   logout(state) {
     state.status = '';
     state.token = '';
+  },
+  saveUserData(state, userData) {
+    state.user = userData;
   }
 };
 

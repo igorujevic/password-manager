@@ -1,7 +1,9 @@
+import Account from '../views/desktop/Account.vue';
 import Dashboard from '../views/desktop/Dashboard.vue';
 import HomeDekstop from '../views/desktop/Home.vue';
 import HomeMobile from '../views/mobile/Home.vue';
 import Login from '../views/desktop/Login.vue';
+import NotFound from '../views/desktop/NotFound.vue';
 import Register from '../views/desktop/Register.vue';
 import store from '../store';
 import Vue from 'vue';
@@ -30,6 +32,17 @@ const routes = [
     }
   },
   {
+    path: '/account',
+    name: 'Account',
+    components: {
+      desktop: Account,
+      mobile: Account
+    },
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/register',
     name: 'Register',
     components: {
@@ -51,7 +64,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/desktop/NotFound.vue')
+    components: {
+      desktop: NotFound,
+      mobile: NotFound
+    }
   }
 ];
 

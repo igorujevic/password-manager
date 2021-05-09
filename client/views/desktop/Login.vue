@@ -60,6 +60,7 @@ export default {
   }),
   methods: {
     ...mapActions('user', ['setToken']),
+    ...mapActions('user', ['saveUserData']),
     clearMessage() {
       this.message = '';
     },
@@ -70,6 +71,7 @@ export default {
         password: this.password
       })
         .then(({ data }) => {
+          this.saveUserData(data.userData);
           this.setToken(data.token);
           this.$notify({
             type: 'success',

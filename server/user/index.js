@@ -11,6 +11,7 @@ router
   .get('/verify', ctrl.verify)
   .use(authenticate)
   .get('/', ctrl.getAll)
+  .get('/:id', ctrl.getUserData)
   .put('/', ctrl.updateUser)
   .put('/password', ctrl.updateUserPassword);
 
