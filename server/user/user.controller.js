@@ -90,17 +90,18 @@ async function verify(req, res) {
 }
 
 async function getAll(req, res) {
-  // get token from header
-  const token = req.headers.authorization.split(' ')[1];
-  if (!token) return res.status(403).send({ success: false, message: 'Forbidden' });
-  // decode token
-  const decoded = jwt.decode(token, AUTH_JWT_SECRET);
-  // find that user
-  const user = await User.findOne({ email: decoded.email });
-  // check if admin
-  if (!user.admin) return res.status(403).send({ success: false, message: 'Forbidden' });
+  if (!req.user.admin) return res.status(403).send({ success: false, message: 'Forbidden. Only for admin!' });
   const users = await User.find();
   return res.send({ success: true, users });
+}
+
+async function getUserData(req, res) {
+  const userId = req.params.id;
+  // find that user
+  const user = await User.findOne({ _id: userId });
+  // check if admin
+  if (user) return res.status(200).send({ success: true, user });
+  else return res.send({ success: false, message: 'Can not get user data or user does not exist.' });
 }
 
 async function updateUser(req, res) {
@@ -149,6 +150,7 @@ module.exports = {
   register,
   login,
   getAll,
+  getUserData,
   updateUser,
   updateUserPassword,
   verify
