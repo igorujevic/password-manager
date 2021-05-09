@@ -22,9 +22,10 @@
 
 <script>
 // @ is an alias to /src
+import { mapActions, mapGetters } from 'vuex';
+import auth from '@/api/auth';
 import CreatePasswordVaultModal from '../../components/universal/CreatePasswordVaultModal';
 import Loader from '../../components/universal/Loader';
-import { mapGetters } from 'vuex';
 import passwordVault from '@/api/passwordVault';
 import PasswordVaultCard from '../../components/desktop/PasswordVaultCard';
 import { remove } from 'lodash';
@@ -39,6 +40,7 @@ export default {
     ...mapGetters('user', ['authToken'])
   },
   methods: {
+    ...mapActions('user', ['logoutUser']),
     showModal() {
       this.$modal.show('create-pv-modal');
     },
@@ -49,24 +51,34 @@ export default {
       this.allPasswords = remove(this.allPasswords, n => n._id !== id);
     }
   },
-  async mounted() {
-    passwordVault.getAll({
+  async created() {
+    auth.verify({
       headers: {
         Authorization: `Bearer ${this.authToken}`
       }
     })
-    .then(({ data }) => {
-      this.allPasswords = data.passwords;
-    })
-    .catch(() => {
-      this.$notify({
-        type: 'error',
-        text: 'Something went wrong while loading data! Try later or contact us.',
-        duration: 5000
+    .then(() => {
+      passwordVault.getAll({
+        headers: {
+          Authorization: `Bearer ${this.authToken}`
+        }
+      })
+      .then(({ data }) => {
+        this.allPasswords = data.passwords;
+      })
+      .catch(() => {
+        this.$notify({
+          type: 'error',
+          text: 'Something went wrong while loading data! Try later or contact us.',
+          duration: 5000
+        });
+      })
+      .finally(() => {
+        this.loadPasswords = false;
       });
-    })
-    .finally(() => {
-      this.loadPasswords = false;
+    }).catch(() => {
+      this.logoutUser();
+      this.$router.push({ name: 'Login' });
     });
   },
   components: {
