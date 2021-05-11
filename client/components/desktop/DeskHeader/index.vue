@@ -1,12 +1,12 @@
 <template>
   <div class="desk-header">
-    <img @click="toHome" class="logo" alt="Vue logo" :src="logo">
+    <img @click="toHome" class="logo" alt="Vue logo" :src="logo" />
     <div v-show="!onlyLogo">
       <div v-if="!isLoggedIn" class="header-nav not-logged-in">
         <router-link :to="{ name: 'Login' }" class="header-nav-link">
           Login
         </router-link>
-        <br>
+        <br />
         <router-link :to="{ name: 'Register' }" class="header-nav-link">
           Register
         </router-link>
@@ -15,7 +15,7 @@
         <router-link :to="{ name: 'Account' }" class="header-nav-link">
           Account
         </router-link>
-        <br>
+        <br />
         <button @click="logout">Logout</button>
       </div>
     </div>
@@ -24,46 +24,49 @@
 
 <script>
 // @ is an alias to /src
-import { mapActions, mapGetters } from 'vuex';
-import Logo from '@/assets/logo.png';
+import { mapActions, mapGetters } from "vuex";
+import Logo from "@/assets/logo.png";
 
 export default {
-  name: 'desk-header',
+  name: "desk-header",
   data: () => ({
     onlyLogo: false,
     logo: Logo
   }),
   computed: {
-    ...mapGetters('user', ['isLoggedIn'])
+    ...mapGetters("user", ["isLoggedIn"])
   },
   methods: {
-    ...mapActions('user', ['logoutUser']),
+    ...mapActions("user", ["logoutUser"]),
     toHome() {
-      if (this.isLoggedIn) this.$router.push({ name: 'Dashboard' }).catch(() => {});
-      else this.$router.push({ name: 'Home' }).catch(() => {});
+      if (this.isLoggedIn)
+        this.$router.push({ name: "Dashboard" }).catch(() => {});
+      else this.$router.push({ name: "Home" }).catch(() => {});
     },
     changeOnlyLogo() {
-      if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.onlyLogo = true;
+      if (["/login", "/register"].includes(this.$router.currentRoute.path))
+        this.onlyLogo = true;
       else this.onlyLogo = false;
     },
     logout() {
       this.logoutUser();
       this.$notify({
-        type: 'success',
-        text: 'You are logged out.',
+        type: "success",
+        text: "You are logged out.",
         duration: 3000
       });
-      this.$router.push({ name: 'Login' });
+      this.$router.push({ name: "Login" });
     }
   },
   watch: {
-    $route(to, _) {
-      if (['/login', '/register'].includes(to.path)) this.onlyLogo = true;
+    $route(to) {
+      if (["/login", "/register"].includes(to.path)) this.onlyLogo = true;
       else this.onlyLogo = false;
     }
   },
   created() {
-    if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.onlyLogo = true;
+    if (["/login", "/register"].includes(this.$router.currentRoute.path))
+      this.onlyLogo = true;
     else this.onlyLogo = false;
   }
 };

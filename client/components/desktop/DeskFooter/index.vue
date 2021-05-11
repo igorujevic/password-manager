@@ -58,34 +58,37 @@
 
 <script>
 // @ is an alias to /src
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'desk-footer',
+  name: "desk-footer",
   data: () => ({
     showFooter: true
   }),
   computed: {
-    ...mapGetters('user', ['isLoggedIn'])
+    ...mapGetters("user", ["isLoggedIn"])
   },
   methods: {
     toHome() {
-      if (this.isLoggedIn) this.$router.push({ name: 'Dashboard' }).catch(() => {});
-      else this.$router.push({ name: 'Home' }).catch(() => {});
+      if (this.isLoggedIn)
+        this.$router.push({ name: "Dashboard" }).catch(() => {});
+      else this.$router.push({ name: "Home" }).catch(() => {});
     },
     changeOnlyLogo() {
-      if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.showFooter = false;
+      if (["/login", "/register"].includes(this.$router.currentRoute.path))
+        this.showFooter = false;
       else this.showFooter = true;
     }
   },
   watch: {
-    $route(to, _) {
-      if (['/login', '/register'].includes(to.path)) this.showFooter = false;
+    $route(to) {
+      if (["/login", "/register"].includes(to.path)) this.showFooter = false;
       else this.showFooter = true;
     }
   },
   created() {
-    if (['/login', '/register'].includes(this.$router.currentRoute.path)) this.showFooter = false;
+    if (["/login", "/register"].includes(this.$router.currentRoute.path))
+      this.showFooter = false;
     else this.showFooter = true;
   }
 };

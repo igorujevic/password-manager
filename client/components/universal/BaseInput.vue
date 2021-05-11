@@ -5,15 +5,16 @@
     @change="$emit('change', $event.target.value)"
     :value="value"
     :type="type"
-    class="input">
+    class="input"
+  />
 </template>
 
 <script>
 export default {
-  name: 'base-input',
+  name: "",
   props: {
-    value: { type: String, default: '' },
-    type: { type: String, default: '' }
+    value: { type: String, default: "" },
+    type: { type: String, default: "" }
   },
   computed: {
     listeners() {

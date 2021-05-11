@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import auth from '@/api/auth';
-import DesktopLayout from './DesktopLayout';
-import MobileLayout from './MobileLayout';
-import TokenExpireModal from '@/components/universal/TokenExpireModal';
+import { mapActions, mapGetters } from "vuex";
+import auth from "@/api/auth";
+import DesktopLayout from "./DesktopLayout";
+import MobileLayout from "./MobileLayout";
+import TokenExpireModal from "@/components/universal/TokenExpireModal";
 
 export default {
   data: () => ({
@@ -25,16 +25,16 @@ export default {
     firstTime: true
   }),
   computed: {
-    ...mapGetters('user', ['authToken'])
+    ...mapGetters("user", ["authToken"])
   },
   methods: {
-    ...mapActions('user', ['logoutUser']),
+    ...mapActions("user", ["logoutUser"]),
     onResize() {
       this.windowSize = window.innerWidth;
     }
   },
   watch: {
-    authToken: function (val) {
+    authToken: function() {
       if (this.authToken) {
         this.interval = setInterval(async () => {
           try {
@@ -44,7 +44,7 @@ export default {
               }
             });
           } catch (_) {
-            this.$modal.show('token-expire-modal');
+            this.$modal.show("token-expire-modal");
             clearInterval(this.interval);
           }
         }, 5000);
@@ -64,11 +64,11 @@ export default {
       }
     }
     this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
+      window.addEventListener("resize", this.onResize);
     });
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener("resize", this.onResize);
   },
   components: {
     DesktopLayout,
@@ -92,5 +92,4 @@ export default {
   height: 100%;
   margin-top: 50px;
 }
-
 </style>
