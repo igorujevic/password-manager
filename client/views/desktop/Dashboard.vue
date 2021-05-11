@@ -1,19 +1,34 @@
 <template>
   <div class="dashboard">
     <h1>Dashboard</h1>
-    <div @click="showModal" class="open-create-btn">
-      <span class="fas fa-plus-circle fa-2x"></span>
+    <div class="open-create-btn" @click="showModal">
+      <span class="fas fa-plus-circle fa-2x" />
     </div>
-    <create-password-vault-modal @newPasswordVaultCreated="saveNewPassowrdVault" />
+    <create-password-vault-modal
+      @newPasswordVaultCreated="saveNewPassowrdVault"
+    />
     <div class="all-password-vaults-container">
       <h2>Your passwords:</h2>
+      <input
+        type="text"
+        v-model="this.search"
+        placeholder="Search..."
+        name="search"
+        id="search"
+        class="search-bar"
+      />
       <div v-if="loadPasswords" class="no-content-wrapper">
         <loader />
       </div>
       <div v-else class="passwords-container">
         <div v-if="!allPasswords.length">no saved passwords</div>
         <ul v-else class="list">
-          <password-vault-card v-for="pv in allPasswords" :key="pv._id" @passwordVaultDeleted="removePasswordVaultFromArray" :data="pv" />
+          <password-vault-card
+            v-for="pv in allPasswords"
+            :key="pv._id"
+            @passwordVaultDeleted="removePasswordVaultFromArray"
+            :data="pv"
+          />
         </ul>
       </div>
     </div>
@@ -22,27 +37,28 @@
 
 <script>
 // @ is an alias to /src
-import { mapActions, mapGetters } from 'vuex';
-import auth from '@/api/auth';
-import CreatePasswordVaultModal from '../../components/universal/CreatePasswordVaultModal';
-import Loader from '../../components/universal/Loader';
-import passwordVault from '@/api/passwordVault';
-import PasswordVaultCard from '../../components/desktop/PasswordVaultCard';
-import { remove } from 'lodash';
+import { mapActions, mapGetters } from "vuex";
+import auth from "@/api/auth";
+import CreatePasswordVaultModal from "../../components/universal/CreatePasswordVaultModal";
+import Loader from "../../components/universal/Loader";
+import passwordVault from "@/api/passwordVault";
+import PasswordVaultCard from "../../components/desktop/PasswordVaultCard";
+import { remove } from "lodash";
 
 export default {
-  name: 'dashboard',
+  name: "dashboard",
   data: () => ({
     loadPasswords: true,
-    allPasswords: []
+    allPasswords: [],
+    search: ""
   }),
   computed: {
-    ...mapGetters('user', ['authToken'])
+    ...mapGetters("user", ["authToken"])
   },
   methods: {
-    ...mapActions('user', ['logoutUser']),
+    ...mapActions("user", ["logoutUser"]),
     showModal() {
-      this.$modal.show('create-pv-modal');
+      this.$modal.show("create-pv-modal");
     },
     saveNewPassowrdVault(data) {
       this.allPasswords.unshift(data);
@@ -52,34 +68,38 @@ export default {
     }
   },
   async created() {
-    auth.verify({
-      headers: {
-        Authorization: `Bearer ${this.authToken}`
-      }
-    })
-    .then(() => {
-      passwordVault.getAll({
+    auth
+      .verify({
         headers: {
           Authorization: `Bearer ${this.authToken}`
         }
       })
-      .then(({ data }) => {
-        this.allPasswords = data.passwords;
+      .then(() => {
+        passwordVault
+          .getAll({
+            headers: {
+              Authorization: `Bearer ${this.authToken}`
+            }
+          })
+          .then(({ data }) => {
+            this.allPasswords = data.passwords;
+          })
+          .catch(() => {
+            this.$notify({
+              type: "error",
+              text:
+                "Something went wrong while loading data! Try later or contact us.",
+              duration: 5000
+            });
+          })
+          .finally(() => {
+            this.loadPasswords = false;
+          });
       })
       .catch(() => {
-        this.$notify({
-          type: 'error',
-          text: 'Something went wrong while loading data! Try later or contact us.',
-          duration: 5000
-        });
-      })
-      .finally(() => {
-        this.loadPasswords = false;
+        this.logoutUser();
+        this.$router.push({ name: "Login" });
       });
-    }).catch(() => {
-      this.logoutUser();
-      this.$router.push({ name: 'Login' });
-    });
   },
   components: {
     CreatePasswordVaultModal,
@@ -90,8 +110,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/stylesheets/variables';
-@import '@/assets/stylesheets/animations';
+@import "@/assets/stylesheets/variables";
+@import "@/assets/stylesheets/animations";
 
 .dashboard {
   width: calc(100% - 160px);
@@ -143,7 +163,7 @@ export default {
       animation: fadeIn 0.25s ease forwards;
       display: grid;
       /* define the number of grid columns */
-      grid-template-columns: repeat( auto-fit, minmax(380px, 1fr) );
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 10px;
     }
   }
