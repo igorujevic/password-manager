@@ -7,6 +7,10 @@
     <create-password-vault-modal
       @newPasswordVaultCreated="saveNewPassowrdVault"
     />
+    <edit-password-vault-modal
+      @passwordVaultEdited="saveEditedPasswordVault"
+      :pv="editPV"
+    />
     <div class="all-password-vaults-container">
       <h2>Your passwords:</h2>
       <search
@@ -24,6 +28,7 @@
             v-for="pv in allPasswords"
             :key="pv._id"
             @passwordVaultDeleted="removePasswordVaultFromArray"
+            @editPasswordVaultId="setEditPV"
             :data="pv"
           />
         </ul>
@@ -37,6 +42,7 @@
 import { mapActions, mapGetters } from "vuex";
 import auth from "@/api/auth";
 import CreatePasswordVaultModal from "../../components/universal/CreatePasswordVaultModal";
+import EditPasswordVaultModal from "../../components/universal/EditPasswordVaultModal";
 import debounce from "lodash/debounce";
 import Loader from "../../components/universal/Loader";
 import passwordVault from "@/api/passwordVault";
@@ -49,7 +55,8 @@ export default {
   data: () => ({
     loadPasswords: true,
     allPasswords: [],
-    search: ""
+    search: "",
+    editPV: null
   }),
   computed: {
     ...mapGetters("user", ["authToken"])
@@ -62,8 +69,16 @@ export default {
     saveNewPassowrdVault(data) {
       this.allPasswords.unshift(data);
     },
+    saveEditedPasswordVault(data) {
+      this.allPasswords.map(pv => {
+        if (pv._id == data._id) pv = data;
+      });
+    },
     removePasswordVaultFromArray(id) {
       this.allPasswords = remove(this.allPasswords, n => n._id !== id);
+    },
+    setEditPV(data) {
+      this.editPV = data;
     },
     searchPasswordVaults: debounce(async function() {
       const {
@@ -123,7 +138,8 @@ export default {
     CreatePasswordVaultModal,
     Loader,
     PasswordVaultCard,
-    Search
+    Search,
+    EditPasswordVaultModal
   }
 };
 </script>
