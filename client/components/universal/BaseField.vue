@@ -1,6 +1,6 @@
 <template>
   <div class="base-field-container">
-    <div class="input-container" :class="{ 'focused': focused || hasValue }">
+    <div class="input-container" :class="{ focused: focused || hasValue }">
       <label> {{ placeholder }} </label>
       <slot>
         <base-input
@@ -11,7 +11,8 @@
           v-on="$listeners"
           v-bind="$attrs"
           :type="type"
-          class="stretch" />
+          class="stretch"
+        />
       </slot>
     </div>
     <span v-show="error" class="error-message">{{ error }}</span>
@@ -19,15 +20,15 @@
 </template>
 
 <script>
-import BaseInput from './BaseInput';
+import BaseInput from "./BaseInput";
 
 export default {
-  name: 'base-field',
+  name: "base-field",
   inheritAttrs: true,
   props: {
     icon: {
       type: String,
-      default: ''
+      default: ""
     },
     rounded: {
       type: Boolean,
@@ -35,15 +36,15 @@ export default {
     },
     placeholder: {
       type: String,
-      default: ''
+      default: ""
     },
     error: {
       type: String,
-      default: ''
+      default: ""
     },
     type: {
       type: String,
-      default: 'text'
+      default: "text"
     }
   },
   data: () => ({

@@ -67,7 +67,7 @@ export default {
       window.addEventListener("resize", this.onResize);
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
   },
   components: {

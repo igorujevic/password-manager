@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'base-button',
+  name: "base-button",
   props: {
     primary: {
       type: Boolean,
@@ -23,7 +23,7 @@ export default {
     },
     icon: {
       type: String,
-      default: ''
+      default: ""
     },
     text: {
       type: String,
@@ -53,7 +53,8 @@ export default {
   padding: 5px 10px;
   border: 1px solid $primaryColor;
 
-  .icon, .text {
+  .icon,
+  .text {
     color: $primaryFontColor;
   }
   &:focus {
@@ -68,7 +69,6 @@ export default {
 .rounded {
   border-radius: 10px;
   transition: 0.25s ease;
-
 }
 .primary {
   background-color: $primaryColor;
@@ -77,11 +77,13 @@ export default {
   &:hover {
     background-color: $white;
 
-    .icon, .text {
+    .icon,
+    .text {
       color: $primaryColor;
     }
   }
-  .icon, .text {
+  .icon,
+  .text {
     transition: 0.25s ease;
     color: $white;
   }
