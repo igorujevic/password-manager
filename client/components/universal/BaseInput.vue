@@ -1,11 +1,11 @@
 <template>
   <input
-    v-on="listeners"
-    @input="$emit('input', $event.target.value)"
-    @change="$emit('change', $event.target.value)"
     :value="value"
     :type="type"
     class="input"
+    v-on="listeners"
+    @input="$emit('input', $event.target.value)"
+    @change="$emit('change', $event.target.value)"
   />
 </template>
 
