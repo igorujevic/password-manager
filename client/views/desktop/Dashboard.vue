@@ -9,13 +9,10 @@
     />
     <div class="all-password-vaults-container">
       <h2>Your passwords:</h2>
-      <input
-        type="text"
-        v-model="this.search"
-        placeholder="Search..."
-        name="search"
-        id="search"
-        class="search-bar"
+      <search
+        v-model="search"
+        class="dashboard-search-bar"
+        placeholder="Seacrh by name..."
       />
       <div v-if="loadPasswords" class="no-content-wrapper">
         <loader />
@@ -40,10 +37,12 @@
 import { mapActions, mapGetters } from "vuex";
 import auth from "@/api/auth";
 import CreatePasswordVaultModal from "../../components/universal/CreatePasswordVaultModal";
+import debounce from "lodash/debounce";
 import Loader from "../../components/universal/Loader";
 import passwordVault from "@/api/passwordVault";
 import PasswordVaultCard from "../../components/desktop/PasswordVaultCard";
 import { remove } from "lodash";
+import Search from "../../components/universal/Search";
 
 export default {
   name: "dashboard",
@@ -65,6 +64,25 @@ export default {
     },
     removePasswordVaultFromArray(id) {
       this.allPasswords = remove(this.allPasswords, n => n._id !== id);
+    },
+    searchPasswordVaults: debounce(async function() {
+      const {
+        data: { passwords }
+      } = await passwordVault.getAll({
+        params: {
+          search: this.search
+        },
+        headers: {
+          Authorization: `Bearer ${this.authToken}`
+        }
+      });
+      this.allPasswords = passwords;
+    }, 300)
+  },
+  watch: {
+    search: {
+      handler: "searchPasswordVaults",
+      immediate: true
     }
   },
   async created() {
@@ -104,7 +122,8 @@ export default {
   components: {
     CreatePasswordVaultModal,
     Loader,
-    PasswordVaultCard
+    PasswordVaultCard,
+    Search
   }
 };
 </script>
@@ -145,6 +164,10 @@ export default {
     height: fit-content;
     display: flex;
     flex-direction: column;
+
+    .dashboard-search-bar {
+      margin-bottom: 25px;
+    }
 
     .no-content-wrapper {
       width: 100%;
