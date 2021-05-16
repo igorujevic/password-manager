@@ -44,10 +44,10 @@
           <p>Contact:</p>
           <div>
             <a href="/" target="_blank">
-              <span class="fab fa-linkedin fa-lg icon"></span>
+              <span class="fab fa-linkedin fa-lg icon" />
             </a>
             <a href="/" target="_blank">
-              <span class="fab fa-github-square fa-lg icon"></span>
+              <span class="fab fa-github-square fa-lg icon" />
             </a>
           </div>
         </div>
@@ -82,12 +82,12 @@ export default {
   },
   watch: {
     $route(to) {
-      if (["/login", "/register"].includes(to.path)) this.showFooter = false;
+      if (["/login", "/register", "/admin-dashboard"].includes(to.path)) this.showFooter = false;
       else this.showFooter = true;
     }
   },
   created() {
-    if (["/login", "/register"].includes(this.$router.currentRoute.path))
+    if (["/login", "/register", "/admin-dashboard"].includes(this.$router.currentRoute.path))
       this.showFooter = false;
     else this.showFooter = true;
   }

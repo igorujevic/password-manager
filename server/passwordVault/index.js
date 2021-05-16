@@ -8,6 +8,7 @@ const router = express.Router();
 router
   .use(authenticate)
   .get('/', ctrl.getAll)
+  .get('/admin', ctrl.getAllAdmin)
   .post('/create', ctrl.create)
   .put('/update/:id', ctrl.update)
   .delete('/delete/:id', ctrl.deleteOne);

@@ -88,7 +88,6 @@ async function verify(req, res) {
     const decoded = jwt.verify(token, AUTH_JWT_SECRET);
     return res.status(200).send(decoded);
   } catch (err) {
-    console.log("Error: ", err);
     return res.status(401).send(err);
   }
 }

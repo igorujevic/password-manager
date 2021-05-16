@@ -10,7 +10,7 @@ const PasswordVault = require("./passwordVault.model");
 
 async function create(req, res) {
   // get user id from saved user in req
-  const { user } = req.user;
+  const user = req.user;
   const key512Bits1000Iterations = CryptoJS.PBKDF2(
     AUTH_JWT_SECRET,
     user.username,
@@ -51,7 +51,7 @@ async function create(req, res) {
 
 async function getAll(req, res) {
   // get user id from saved user in req
-  const { user } = req.user;
+  const user = req.user;
   const key512Bits1000Iterations = CryptoJS.PBKDF2(
     AUTH_JWT_SECRET,
     user.username,
@@ -86,7 +86,7 @@ async function getAll(req, res) {
 }
 
 async function update(req, res) {
-  const { user } = req.user;
+  const user = req.user;
   const paramsId = req.params.id;
   const body = req.body;
   const key512Bits1000Iterations = CryptoJS.PBKDF2(
@@ -123,7 +123,7 @@ async function update(req, res) {
 }
 
 async function deleteOne(req, res) {
-  const { user } = req.user;
+  const user = req.user;
   const paramsId = req.params.id;
 
   const deletedPasswordVault = await PasswordVault.findOneAndDelete({
@@ -138,9 +138,16 @@ async function deleteOne(req, res) {
   });
 }
 
+async function getAllAdmin(req, res) {
+  if (!req.user.admin) return res.status(403).send({ success: false, message: 'Forbidden. Only for admin!' });
+  const passwords = await PasswordVault.find();
+  return res.send({ success: true, passwords });
+}
+
 module.exports = {
   create,
   getAll,
   update,
-  deleteOne
+  deleteOne,
+  getAllAdmin
 };

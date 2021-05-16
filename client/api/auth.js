@@ -9,6 +9,7 @@ const url = {
   getUserData: '/users',
   updateUserData: '/users',
   updatePassword: '/users/password',
+  getAllUsers: '/users'
 };
 
 function register(userData) {
@@ -35,11 +36,16 @@ function updatePassword(updateData, params) {
   return axios.put(`http://localhost:3000${baseURL}${url.updatePassword}`, updateData, params);
 }
 
+function getAllUsers(params) {
+  return axios.get(`http://localhost:3000${baseURL}${url.getAllUsers}`, params);
+}
+
 export default {
   register,
   login,
   verify,
   getUserData,
   updateUserData,
-  updatePassword
+  updatePassword,
+  getAllUsers
 };

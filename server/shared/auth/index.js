@@ -10,7 +10,7 @@ async function authenticate(req, res, next) {
   try {
     const { id } = jwt.verify(token, AUTH_JWT_SECRET);
     const user = await User.findById({ _id: id });
-    req.user = { user };
+    req.user = user;
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) return res.status(401).json({ message: 'Token is invalid!' });

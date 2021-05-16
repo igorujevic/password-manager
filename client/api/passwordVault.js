@@ -6,7 +6,8 @@ const url = {
   create: "/password-vault/create",
   getAll: "/password-vault",
   deleteOne: "/password-vault/delete",
-  update: "/password-vault/update"
+  update: "/password-vault/update",
+  getAllAdmin: "/password-vault/admin"
 };
 
 function create(data, params) {
@@ -19,6 +20,10 @@ function create(data, params) {
 
 function getAll(params) {
   return axios.get(`http://localhost:3000${baseURL}${url.getAll}`, params);
+}
+
+function getAllAdmin(params) {
+  return axios.get(`http://localhost:3000${baseURL}${url.getAllAdmin}`, params);
 }
 
 function deleteOne(id, params) {
@@ -40,5 +45,6 @@ export default {
   create,
   getAll,
   deleteOne,
-  update
+  update,
+  getAllAdmin
 };
