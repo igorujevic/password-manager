@@ -34,7 +34,7 @@
 
 <script>
 // @ is an alias to /src
-import { convertISOToDate } from "../../../helpers/functions";
+import { convertISOToDateAndTime } from "../../../helpers/functions";
 import { mapGetters } from "vuex";
 import passwordVault from "@/api/passwordVault";
 
@@ -54,7 +54,7 @@ export default {
     ...mapGetters("user", ["authToken"]),
     // a computed getter
     createdAt: function() {
-      return convertISOToDate(this.data.createdAt);
+      return convertISOToDateAndTime(this.data.createdAt);
     }
   },
   methods: {

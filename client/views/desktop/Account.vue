@@ -1,13 +1,34 @@
 <template>
   <div class="desk-account-page">
-    <h1>Account page</h1>
-    <p>since {{ createdAt }}</p>
+    <back-arrow />
+    <h1 class="desk-account-page-title">Account page of {{userName}}</h1>
+    <p class="desk-account-page-since">since: {{ createdAt }}</p>
+    <div class="user-data account-page-email">
+      <div>
+        <p>Email:</p>
+        <p>{{userEmail}}</p>
+      </div>
+      <base-button primary rounded text="Change email" class="account-page-edit-btn" />
+    </div>
+    <div class="user-data account-page-username">
+      <div>
+        <p>Username:</p>
+        <p>{{userName}}</p>
+      </div>
+      <base-button primary rounded text="Change username" class="account-page-edit-btn" />
+    </div>
+    <div class="user-data account-page-password">
+      <p>Your password is safe and encrypted</p>
+      <base-button  primary rounded text="Change password" class="account-page-edit-btn" />
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import { convertISOToDate } from '../../helpers/functions';
+import BackArrow from "../../assets/icons/BackArrow";
+import BaseButton from "../../components/universal/BaseButton";
+import { convertISOToDateOnly } from '../../helpers/functions';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -16,18 +37,23 @@ export default {
   }),
   computed: {
     ...mapGetters('user', ['userData']),
-    createdAt: function () {
-      return convertISOToDate(this.userData.createdAt);
+    createdAt: function() {
+      return convertISOToDateOnly(this.userData.createdAt);
+    },
+    userName: function() {
+      return this.userData.username;
+    },
+    userEmail: function() {
+      return this.userData.email
     }
   },
   methods: {
-    goBack() {
-      this.$router.go(-1);
-    }
   },
   async created() {
   },
   components: {
+    BackArrow,
+    BaseButton
   }
 };
 </script>
@@ -45,5 +71,54 @@ export default {
   padding: 40px 80px 40px;
   position: relative;
   color: #222222;
+
+  .back-arrow-icon {
+    margin-bottom: 20px;
+  }
+
+  &-title {
+    margin-bottom: 20px;
+  }
+
+  &-since {
+    color: $darkGrey;
+    margin-bottom: 20px;
+  }
+
+  .user-data {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+
+    div {
+      display: flex;
+      min-width: 300px;
+      flex-direction: column;
+      margin-right: 50px;
+    }
+
+    p {
+      &:first-of-type {
+        font-weight: bold;
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .account-page-edit-btn {
+      max-width: 200px;
+    }
+
+    &.account-page-password {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      p {
+        margin-bottom: 10px;
+      }
+    }
+  }
 }
 </style>
