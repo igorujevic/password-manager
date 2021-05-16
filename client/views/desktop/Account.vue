@@ -4,18 +4,17 @@
     <h1 class="desk-account-page-title">Account page of {{userName}}</h1>
     <p class="desk-account-page-since">since: {{ createdAt }}</p>
     <div class="user-data account-page-email">
-      <div>
-        <p>Email:</p>
-        <p>{{userEmail}}</p>
+      <div class="user-data-details">
+        <div>
+          <p>Email:</p>
+          <p>{{userEmail}}</p>
+        </div>
+        <div>
+          <p>Username:</p>
+          <p>{{userName}}</p>
+        </div>
       </div>
-      <base-button primary rounded text="Change email" class="account-page-edit-btn" />
-    </div>
-    <div class="user-data account-page-username">
-      <div>
-        <p>Username:</p>
-        <p>{{userName}}</p>
-      </div>
-      <base-button primary rounded text="Change username" class="account-page-edit-btn" />
+      <base-button primary rounded text="Change email or username" class="account-page-edit-btn" />
     </div>
     <div class="user-data account-page-password">
       <p>Your password is safe and encrypted</p>
@@ -88,13 +87,20 @@ export default {
   .user-data {
     margin-bottom: 20px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
 
-    div {
+
+
+    &-details {
       display: flex;
       min-width: 300px;
-      flex-direction: column;
-      margin-right: 50px;
+      margin-bottom: 10px;
+
+      div {
+        margin-right: 50px;
+      }
+
     }
 
     p {
