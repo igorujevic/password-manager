@@ -8,7 +8,7 @@ const User = require('./user.model');
 const round = parseInt(AUTH_SALT_ROUNDS);
 
 async function register(req, res) {
-  const { username, email, password } = req.body;
+  const { username, email, password, firstName, lastName } = req.body;
 
   // Check if this user already exisits
   const userUniqueEmail = await User.findOne({ email });
@@ -21,6 +21,8 @@ async function register(req, res) {
 
   const newUser = new User({
     username,
+    firstName,
+    lastName,
     email,
     password: await bcrypt.hash(password, salt),
     admin: false,
@@ -39,7 +41,6 @@ async function register(req, res) {
       expiresIn: '3h'
     }
   );
-
   return res.status(200).json({
     sucess: true,
     message: 'User registered',
@@ -71,6 +72,8 @@ async function login(req, res) {
     userData: {
       userId: user._id,
       username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       createdAt: user.createdAt,
       admin: user.admin
@@ -81,11 +84,12 @@ async function login(req, res) {
 async function verify(req, res) {
   const token = req.headers.authorization.split(' ')[1];
   if (!token) return res.status(404).send({ success: false, message: 'Token is missing' });
-
+  console.log(token)
   try {
     const decoded = jwt.verify(token, AUTH_JWT_SECRET);
     return res.status(200).send(decoded);
   } catch (err) {
+    console.log("Error: ", err);
     return res.status(401).send(err);
   }
 }
@@ -114,10 +118,11 @@ async function updateUser(req, res) {
   const body = req.body;
 
   const updatedUser = await User.findByIdAndUpdate({ _id: decoded.id }, {
-    username: body.username,
+    firstName: body.firstName,
+    lastName: body.lastName,
     email: body.email,
     updatedAt: Date.now()
-  }, { useFindAndModify: false });
+  }, { useFindAndModify: false, new: true },);
 
   if (!updatedUser) return res.status(400).send({ sucess: false, message: 'Something went wrong' });
   else return res.status(201).send({
@@ -126,6 +131,8 @@ async function updateUser(req, res) {
     userData: {
       userId: updatedUser._id,
       username: updatedUser.username,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
       email: updatedUser.email,
       createdAt: updatedUser.createdAt,
       admin: updatedUser.admin

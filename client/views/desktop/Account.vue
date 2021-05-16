@@ -1,7 +1,7 @@
 <template>
   <div class="desk-account-page">
     <back-arrow />
-    <h1 class="desk-account-page-title">Account page of {{userName}}</h1>
+    <h1 class="desk-account-page-title">Account page of {{firstName}} {{lastName}}</h1>
     <p class="desk-account-page-since">since: {{ createdAt }}</p>
     <div class="user-data account-page-email">
       <div class="user-data-details">
@@ -10,11 +10,11 @@
           <p>{{userEmail}}</p>
         </div>
         <div>
-          <p>Username:</p>
-          <p>{{userName}}</p>
+          <p>Name:</p>
+          <p>{{firstName}} {{lastName}}</p>
         </div>
       </div>
-      <base-button @click="$router.push({ name: 'UpdateUserData' })" primary rounded text="Change email or username" class="account-page-edit-btn" />
+      <base-button @click="$router.push({ name: 'UpdateUserData' })" primary rounded text="Change user data" class="account-page-edit-btn" />
     </div>
     <div class="user-data account-page-password">
       <p>Your password is safe and encrypted</p>
@@ -39,8 +39,11 @@ export default {
     createdAt: function() {
       return convertISOToDateOnly(this.userData.createdAt);
     },
-    userName: function() {
-      return this.userData.username;
+    firstName: function() {
+      return this.userData.firstName;
+    },
+    lastName: function() {
+      return this.userData.lastName;
     },
     userEmail: function() {
       return this.userData.email

@@ -6,6 +6,30 @@
         <validation-provider
           v-slot="{ errors }"
           mode="eager"
+          name="First name"
+          :rules="{ required: true, min: { length: 2 } }"
+          class="">
+          <base-field
+            v-model.trim="firstName"
+            :error="errors[0]"
+            type="text"
+            placeholder="First name" />
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          mode="eager"
+          name="Last name"
+          :rules="{ required: true, min: { length: 2 } }"
+          class="">
+          <base-field
+            v-model.trim="lastName"
+            :error="errors[0]"
+            type="text"
+            placeholder="Last name" />
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          mode="eager"
           name="E-mail"
           :rules="{ required: true, email: true }"
           class="">
@@ -63,6 +87,8 @@ import { mapActions } from 'vuex';
 export default {
   name: 'register',
   data: () => ({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     repeat: '',
@@ -77,6 +103,8 @@ export default {
       } else {
         this.isLoading = true;
         auth.register({
+          firstName: this.firstName,
+          lastName: this.lastName,
           email: this.email,
           username: `${this.email.split('@')[0]}-${generateRandomString(8)}`,
           password: this.password

@@ -21,15 +21,28 @@
         <validation-provider
           v-slot="{ errors }"
           mode="eager"
-          name="Username"
-          :rules="{ required: true, min: { length: 8 } }"
+          name="First name"
+          :rules="{ required: true, min: { length: 2 } }"
           class="">
           <base-field
-            v-model="username"
+            v-model="firstName"
             @focus="clearMessage"
             :error="errors[0]"
             type="text"
-            placeholder="Username" />
+            placeholder="First name" />
+        </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          mode="eager"
+          name="Last name"
+          :rules="{ required: true, min: { length: 2 } }"
+          class="">
+          <base-field
+            v-model="lastName"
+            @focus="clearMessage"
+            :error="errors[0]"
+            type="text"
+            placeholder="Last name" />
         </validation-provider>
         <base-button
           type="submit"
@@ -54,7 +67,8 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'change-password',
   data: () => ({
-    username: '',
+    firstName: '',
+    lastName: '',
     email: '',
     message: '',
     isLoading: false
@@ -72,7 +86,8 @@ export default {
       this.isLoading = true;
       auth.updateUserData(
         {
-          username: this.username,
+          firstName: this.firstName,
+          lastName: this.lastName,
           email: this.email
         },
         {
@@ -82,6 +97,7 @@ export default {
         }
       )
         .then(({ data }) => {
+          console.log(data.userData)
           this.saveUserData(data.userData);
           this.$notify({
             type: 'success',
@@ -99,7 +115,8 @@ export default {
     }
   },
   created() {
-    this.username = this.userData.username;
+    this.firstName = this.userData.firstName;
+    this.lastName = this.userData.lastName;
     this.email = this.userData.email;
   },
   components: {

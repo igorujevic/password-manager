@@ -34,7 +34,8 @@ export default {
     logo: Logo
   }),
   computed: {
-    ...mapGetters("user", ["isLoggedIn"])
+    ...mapGetters("user", ["isLoggedIn"]),
+    ...mapGetters("user", ["isAdmin"])
   },
   methods: {
     ...mapActions("user", ["logoutUser"]),
@@ -44,7 +45,7 @@ export default {
       else this.$router.push({ name: "Home" }).catch(() => {});
     },
     changeOnlyLogo() {
-      if (["/login", "/register"].includes(this.$router.currentRoute.path))
+      if (["/login", "/register"].includes(this.$router.currentRoute.path) && this.isAdmin)
         this.onlyLogo = true;
       else this.onlyLogo = false;
     },

@@ -12,6 +12,20 @@ const User = mongoose.model('User', new Schema({
     maxlength: 50,
     unique: true
   },
+  firstName: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 50,
+    unique: true
+  },
+  lastName: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 50,
+    unique: true
+  },
   email: {
     type: String,
     required: true,
