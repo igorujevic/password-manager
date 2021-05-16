@@ -130,12 +130,9 @@ async function updateUserPassword(req, res) {
   if (!token) return res.status(403).send({ success: false, message: 'Forbidden' });
   // decode token
   const decoded = jwt.decode(token, AUTH_JWT_SECRET);
-  console.log(decoded.email)
   // find that user
   const user = await User.findOne({ email: decoded.email });
-  console.log(user);
   const status = await bcrypt.compare(req.body.oldPassword, user.password);
-  console.log(status);
   if (!status) return res.status(403).json({ sucess: false, message: 'Wrong password' });
   else {
     const newPassword = await bcrypt.hash(req.body.newPassword, salt);
