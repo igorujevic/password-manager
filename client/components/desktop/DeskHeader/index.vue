@@ -12,7 +12,7 @@
         </router-link>
       </div>
       <div v-else class="header-nav logged-in">
-        <router-link :to="{ name: 'Account' }" class="header-nav-link">
+        <router-link v-show="!isAdmin" :to="{ name: 'Account' }" class="header-nav-link">
           Account
         </router-link>
         <br />
@@ -40,12 +40,14 @@ export default {
   methods: {
     ...mapActions("user", ["logoutUser"]),
     toHome() {
-      if (this.isLoggedIn)
+      if (this.isLoggedIn && !this.isAdmin)
         this.$router.push({ name: "Dashboard" }).catch(() => {});
+      if (this.isLoggedIn && this.isAdmin)
+        this.$router.push({ name: "AdminDashboard" }).catch(() => {});
       else this.$router.push({ name: "Home" }).catch(() => {});
     },
     changeOnlyLogo() {
-      if (["/login", "/register"].includes(this.$router.currentRoute.path) && this.isAdmin)
+      if (["/login", "/register"].includes(this.$router.currentRoute.path))
         this.onlyLogo = true;
       else this.onlyLogo = false;
     },

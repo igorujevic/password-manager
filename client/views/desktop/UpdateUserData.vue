@@ -97,7 +97,6 @@ export default {
         }
       )
         .then(({ data }) => {
-          console.log(data.userData)
           this.saveUserData(data.userData);
           this.$notify({
             type: 'success',

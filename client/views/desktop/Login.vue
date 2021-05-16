@@ -78,7 +78,8 @@ export default {
             text: 'You are logged in.',
             duration: 3000
           });
-          this.$router.push({ name: 'Dashboard' });
+          if(data.userData.admin) this.$router.push({ name: 'AdminDashboard' });
+          else this.$router.push({ name: 'Dashboard' });
         })
         .catch(({ response: { data, status } }) => {
           this.message = status >= 400 && status < 500 ? `${data.message} Wrong email or password.` : 'Something went wrong. Try again.';

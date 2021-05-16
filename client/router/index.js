@@ -1,4 +1,5 @@
 import Account from '../views/desktop/Account.vue';
+import Admin from '../views/desktop/Admin.vue';
 import ChangePassword from '../views/desktop/ChangePassword.vue';
 import Dashboard from '../views/desktop/Dashboard.vue';
 import HomeDekstop from '../views/desktop/Home.vue';
@@ -67,6 +68,23 @@ const routes = [
     }
   },
   {
+    path: '/admin-dashboard',
+    name: 'AdminDashboard',
+    components: {
+      desktop: Admin,
+      mobile: NotFound
+    },
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true
+    },
+    beforeEnter: (to, from, next) => {
+      if(store.getters['user/isLoggedIn'] && store.getters['user/isAdmin']) next();
+      else if (store.getters['user/isLoggedIn']) next("/dashboard")
+      else next("/login");
+    }
+  },
+  {
     path: '/register',
     name: 'Register',
     components: {
@@ -102,18 +120,33 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if(to.fullPath === '/' && store.getters['user/isLoggedIn'] && store.getters['user/isAdmin']) {
+    next('/admin-dashboard');
+    return;
+  }
+
   if (to.fullPath === '/' && store.getters['user/isLoggedIn'] && !store.getters['user/isAdmin']) {
     next('/dashboard');
     return;
   }
 
-  if ((to.fullPath === '/login' || to.fullPath === '/register') && store.getters['user/isLoggedIn'] && !store.getters['user/isAdmin']) {
-    next('/dashboard');
-    return;
+  if ((to.fullPath === '/login' || to.fullPath === '/register') && store.getters['user/isLoggedIn']) {
+    if(!store.getters['user/isAdmin']) {
+      next('/dashboard');
+      return;
+    }
+    if(store.getters['user/isAdmin']) {
+      next('/admin-dashboard');
+      return;
+    }
   }
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters['user/isLoggedIn']) {
+      if(to.fullPath !== "/admin-dashboard" && store.getters['user/isAdmin']) {
+        next("/admin-dashboard");
+        return;
+      }
       next();
       return;
     }

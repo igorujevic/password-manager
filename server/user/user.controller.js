@@ -84,7 +84,6 @@ async function login(req, res) {
 async function verify(req, res) {
   const token = req.headers.authorization.split(' ')[1];
   if (!token) return res.status(404).send({ success: false, message: 'Token is missing' });
-  console.log(token)
   try {
     const decoded = jwt.verify(token, AUTH_JWT_SECRET);
     return res.status(200).send(decoded);
