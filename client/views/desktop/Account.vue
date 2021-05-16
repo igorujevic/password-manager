@@ -19,7 +19,7 @@
     </div>
     <div class="user-data account-page-password">
       <p>Your password is safe and encrypted</p>
-      <base-button  primary rounded text="Change password" class="account-page-edit-btn" />
+      <base-button @click="$router.push({ name: 'ChangePassword' })"  primary rounded text="Change password" class="account-page-edit-btn" />
     </div>
   </div>
 </template>

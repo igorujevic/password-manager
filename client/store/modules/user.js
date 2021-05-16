@@ -7,7 +7,8 @@ const state = {
 const getters = {
   isLoggedIn: state => !!state.token,
   authToken: state => state.token,
-  userData: state => state.user
+  userData: state => state.user,
+  isAdmin: state => state.user.admin
 };
 
 const actions = {

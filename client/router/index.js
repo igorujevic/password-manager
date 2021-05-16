@@ -1,4 +1,5 @@
 import Account from '../views/desktop/Account.vue';
+import ChangePassword from '../views/desktop/ChangePassword.vue';
 import Dashboard from '../views/desktop/Dashboard.vue';
 import HomeDekstop from '../views/desktop/Home.vue';
 import HomeMobile from '../views/mobile/Home.vue';
@@ -43,6 +44,17 @@ const routes = [
     }
   },
   {
+    path: '/account/change-password',
+    name: 'ChangePassword',
+    components: {
+      desktop: ChangePassword,
+      mobile: NotFound
+    },
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/register',
     name: 'Register',
     components: {
@@ -78,12 +90,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.fullPath === '/' && store.getters['user/isLoggedIn']) {
+  if (to.fullPath === '/' && store.getters['user/isLoggedIn'] && !store.getters['user/isAdmin']) {
     next('/dashboard');
     return;
   }
 
-  if ((to.fullPath === '/login' || to.fullPath === '/register') && store.getters['user/isLoggedIn']) {
+  if ((to.fullPath === '/login' || to.fullPath === '/register') && store.getters['user/isLoggedIn'] && !store.getters['user/isAdmin']) {
     next('/dashboard');
     return;
   }
