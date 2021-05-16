@@ -120,7 +120,17 @@ async function updateUser(req, res) {
   }, { useFindAndModify: false });
 
   if (!updatedUser) return res.status(400).send({ sucess: false, message: 'Something went wrong' });
-  else return res.status(201).send(updatedUser);
+  else return res.status(201).send({
+    sucess: true,
+    message: 'Updated successfuly',
+    userData: {
+      userId: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      createdAt: updatedUser.createdAt,
+      admin: updatedUser.admin
+    }
+  });
 }
 
 async function updateUserPassword(req, res) {

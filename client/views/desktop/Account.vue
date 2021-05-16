@@ -14,7 +14,7 @@
           <p>{{userName}}</p>
         </div>
       </div>
-      <base-button primary rounded text="Change email or username" class="account-page-edit-btn" />
+      <base-button @click="$router.push({ name: 'UpdateUserData' })" primary rounded text="Change email or username" class="account-page-edit-btn" />
     </div>
     <div class="user-data account-page-password">
       <p>Your password is safe and encrypted</p>

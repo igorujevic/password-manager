@@ -1,59 +1,46 @@
 <template>
-  <div class="desk-change-password container">
+  <div class="desk-update-data-page container">
     <back-arrow />
-    <h1>Change your password</h1>
+    <h1>Update your data</h1>
     <validation-observer v-slot="{ handleSubmit }">
-      <form @submit.prevent="handleSubmit(changePassword)" class="eager form-container">
+      <form @submit.prevent="handleSubmit(updateData)" class="eager form-container">
         <validation-provider
           v-slot="{ errors }"
           mode="eager"
-          name="Old password"
-          :rules="{ required: true }"
+          name="Email"
+          :rules="{ required: true, email: true }"
           class="">
           <base-field
-            v-model.trim="oldPassword"
+            v-model.trim="email"
             @focus="clearMessage"
             :error="errors[0]"
-            type="password"
-            placeholder="Old password" />
+            type="text"
+            placeholder="Email"
+            />
         </validation-provider>
         <validation-provider
           v-slot="{ errors }"
           mode="eager"
-          name="New password"
-          vid="newPassword"
+          name="Username"
           :rules="{ required: true, min: { length: 8 } }"
           class="">
           <base-field
-            v-model="newPassword"
+            v-model="username"
             @focus="clearMessage"
             :error="errors[0]"
-            type="password"
-            placeholder="New password" />
-        </validation-provider>
-        <validation-provider
-          v-slot="{ errors }"
-          mode="eager"
-          name="New password repeat"
-          :rules="{ required: true, confirmation: { target: '@newPassword' } }"
-          class="mt-xs">
-          <base-field
-            v-model="repeat"
-            @focus="clearMessage"
-            :error="errors[0]"
-            type="password"
-            placeholder="Repeat new password" />
+            type="text"
+            placeholder="Username" />
         </validation-provider>
         <base-button
           type="submit"
-          :text="isLoading ? 'Loading' : 'Update'"
-          class="change-password-btn"
+          :text="isLoading ? 'Loading' : 'Update data'"
+          class="update-data-page-btn"
           :icon="isLoading ? 'fa fa-spinner fa-spin' : null"
           primary
           rounded />
       </form>
     </validation-observer>
-    <div v-if="message" class="change-password-error-message"> {{ message }} </div>
+    <div v-if="message" class="update-data-page-error-message"> {{ message }} </div>
   </div>
 </template>
 
@@ -62,30 +49,31 @@ import auth from '@/api/auth';
 import BackArrow from "../../assets/icons/BackArrow";
 import BaseButton from '../../components/universal/BaseButton';
 import BaseField from '../../components/universal/BaseField';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'change-password',
   data: () => ({
-    oldPassword: '',
-    newPassword: '',
-    repeat: '',
+    username: '',
+    email: '',
     message: '',
     isLoading: false
   }),
   computed: {
-    ...mapGetters("user", ["authToken"])
+    ...mapGetters("user", ["authToken"]),
+    ...mapGetters("user", ["userData"])
   },
   methods: {
+    ...mapActions('user', ['saveUserData']),
     clearMessage() {
       this.message = '';
     },
-    changePassword() {
+    updateData() {
       this.isLoading = true;
-      auth.updatePassword(
+      auth.updateUserData(
         {
-          oldPassword: this.oldPassword,
-          newPassword: this.newPassword
+          username: this.username,
+          email: this.email
         },
         {
           headers: {
@@ -94,6 +82,7 @@ export default {
         }
       )
         .then(({ data }) => {
+          this.saveUserData(data.userData);
           this.$notify({
             type: 'success',
             text: 'Password changed successfuly.',
@@ -109,6 +98,10 @@ export default {
         });
     }
   },
+  created() {
+    this.username = this.userData.username;
+    this.email = this.userData.email;
+  },
   components: {
     BackArrow,
     BaseButton,
@@ -120,7 +113,7 @@ export default {
 <style lang="scss">
 @import "../../assets/stylesheets/variables";
 
-.desk-change-password.container {
+.desk-update-data-page.container {
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -154,11 +147,11 @@ export default {
     }
   }
 
-  .change-password-btn {
+  .update-data-page-btn {
     max-width: 100%;
   }
 
-  .change-password-error-message {
+  .update-data-page-error-message {
     margin: 20px 0px;
     color: $error;
   }

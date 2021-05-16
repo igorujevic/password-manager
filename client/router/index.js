@@ -6,6 +6,7 @@ import HomeMobile from '../views/mobile/Home.vue';
 import Login from '../views/desktop/Login.vue';
 import NotFound from '../views/desktop/NotFound.vue';
 import Register from '../views/desktop/Register.vue';
+import UpdateUserData from '../views/desktop/UpdateUserData.vue';
 import store from '../store';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -48,6 +49,17 @@ const routes = [
     name: 'ChangePassword',
     components: {
       desktop: ChangePassword,
+      mobile: NotFound
+    },
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/account/update-user-data',
+    name: 'UpdateUserData',
+    components: {
+      desktop: UpdateUserData,
       mobile: NotFound
     },
     meta: {
