@@ -3,6 +3,7 @@
 const { AUTH_JWT_SECRET, AUTH_SALT_ROUNDS } = process.env;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { generateRandomString } = require('../helpers/functions');
 const User = require('./user.model');
 
 const round = parseInt(AUTH_SALT_ROUNDS);
@@ -20,7 +21,7 @@ async function register(req, res) {
   const salt = await bcrypt.genSalt(round);
 
   const newUser = new User({
-    username,
+    username: `${email.split('@')[0]}-${generateRandomString(8)}`,
     firstName,
     lastName,
     email,
@@ -161,6 +162,21 @@ async function updateUserPassword(req, res) {
   }
 }
 
+async function deleteUser(req, res) {
+  if(!req.user.admin) return res.status(403).send({ success: false, message: 'Forbidden. Only for admin.' });
+
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+    if(!user) return res.status(404).send({sucess: false, message: `User with id(${userId}) does not exist.`})
+    await User.deleteOne({ _id: userId })
+    return res.send({ success: true, message: `User with id(${userId}) deleted.` });
+  } catch (error) {
+    return res.status(500).send({ success: false, message: `Error whil trying to delete user with id(${userId}).` });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -168,5 +184,6 @@ module.exports = {
   getUserData,
   updateUser,
   updateUserPassword,
-  verify
+  verify,
+  deleteUser
 };

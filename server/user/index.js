@@ -13,7 +13,8 @@ router
   .get('/', ctrl.getAll)
   .get('/:id', ctrl.getUserData)
   .put('/', ctrl.updateUser)
-  .put('/password', ctrl.updateUserPassword);
+  .put('/password', ctrl.updateUserPassword)
+  .delete('/:id', ctrl.deleteUser);
 
 module.exports = {
   path: '/users', router

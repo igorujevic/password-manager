@@ -12,7 +12,7 @@
             <p> email: {{user.email}} </p>
             <p> since: {{getDate(user.createdAt)}} </p>
           </div>
-          <div @click.stop="deletePasswordVault" class="delete-icon">
+          <div @click.stop="deleteUser(user._id)" class="delete-icon">
             <span class="fas fa-trash-alt" />
           </div>
         </li>
@@ -31,6 +31,7 @@ import passwordVault from "@/api/passwordVault";
 import Loader from "../../components/universal/Loader";
 import { convertISOToDateAndTime } from "../../helpers/functions";
 import { mapGetters } from 'vuex';
+import { remove } from "lodash";
 
 export default {
   name: 'account',
@@ -45,6 +46,28 @@ export default {
   methods: {
     getDate(data) {
       return convertISOToDateAndTime(data)
+    },
+    deleteUser(id) {
+      if(confirm('Are you sure?')) {
+        auth.deleteUser(id, {
+          headers: {
+            Authorization: `Bearer ${this.authToken}`
+          }
+        }).then(({data}) => {
+          this.users = remove(this.users, n => n._id !== id);
+          this.$notify({
+            type: "success",
+            text: data.message,
+            duration: 3000
+          })
+        }).catch(({response: {data}}) => {
+          this.$notify({
+            type: 'error',
+            text: data.message,
+            duration: 3000
+          });
+        })
+      }
     }
   },
   async created() {

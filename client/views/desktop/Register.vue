@@ -81,7 +81,6 @@
 import auth from '@/api/auth';
 import BaseButton from '../../components/universal/BaseButton';
 import BaseField from '../../components/universal/BaseField';
-import { generateRandomString } from '../../helpers/functions';
 import { mapActions } from 'vuex';
 
 export default {
@@ -106,7 +105,6 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
-          username: `${this.email.split('@')[0]}-${generateRandomString(8)}`,
           password: this.password
         })
         .then(({ data }) => {
