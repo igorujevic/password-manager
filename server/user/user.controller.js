@@ -167,14 +167,9 @@ async function deleteUser(req, res) {
 
   const userId = req.params.id;
 
-  try {
-    const user = await User.findOne({ _id: userId });
-    if(!user) return res.status(404).send({sucess: false, message: `User with id(${userId}) does not exist.`})
-    await User.deleteOne({ _id: userId })
-    return res.send({ success: true, message: `User with id(${userId}) deleted.` });
-  } catch (error) {
-    return res.status(500).send({ success: false, message: `Error whil trying to delete user with id(${userId}).` });
-  }
+  let deleted = await User.findByIdAndRemove({ _id: userId })
+  if(!deleted) return res.status(404).send({success: false, message: `Error while trying to delete user with id(${userId}).`})
+  else return res.status(200).send({ success: true, message: `User with id(${userId}) deleted.` });
 }
 
 module.exports = {
