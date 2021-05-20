@@ -43,7 +43,7 @@ async function create(req, res) {
   await newPasswordVault.save();
 
   return res.status(200).json({
-    sucess: true,
+    success: true,
     message: "New Password Vault created",
     newPasswordVault
   });
@@ -79,7 +79,7 @@ async function getAll(req, res) {
   });
 
   return res.status(200).json({
-    sucess: true,
+    success: true,
     message: "All users passwords",
     passwords: await newArray
   });
@@ -116,7 +116,7 @@ async function update(req, res) {
   );
 
   return res.status(200).json({
-    sucess: true,
+    success: true,
     message: "Password Vault updated successfully",
     updatedPasswordVault
   });
@@ -132,7 +132,7 @@ async function deleteOne(req, res) {
   });
 
   return res.status(200).json({
-    sucess: true,
+    success: true,
     message: "Password Vault deleted successfully",
     deletedPasswordVault
   });

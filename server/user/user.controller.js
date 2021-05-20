@@ -12,10 +12,10 @@ async function register(req, res) {
 
   // Check if this user already exisits
   const userUniqueEmail = await User.findOne({ email });
-  if (userUniqueEmail) return res.status(400).json({ sucess: false, message: 'Unabale to register with this mail. Email needs to be unique. Try another one.' });
+  if (userUniqueEmail) return res.status(400).json({ success: false, message: 'Unabale to register with this mail. Email needs to be unique. Try another one.' });
   // Check if this user already exisits
   const userUniqueUsername = await User.findOne({ username });
-  if (userUniqueUsername) return res.status(400).json({ sucess: false, message: 'Unabale to register with this username. Username needs to be unique. Try another one.' });
+  if (userUniqueUsername) return res.status(400).json({ success: false, message: 'Unabale to register with this username. Username needs to be unique. Try another one.' });
 
   const salt = await bcrypt.genSalt(round);
 
@@ -42,7 +42,7 @@ async function register(req, res) {
     }
   );
   return res.status(200).json({
-    sucess: true,
+    success: true,
     message: 'User registered',
     newUser,
     token
@@ -54,7 +54,7 @@ async function login(req, res) {
   const user = await User.findOne({ email });
   if (!user) return res.status(401).json({ success: false, message: 'Auth failed!' });
   const status = await bcrypt.compare(password, user.password);
-  if (!status) return res.status(401).json({ sucess: false, message: 'Auth failed!' });
+  if (!status) return res.status(401).json({ success: false, message: 'Auth failed!' });
   const token = jwt.sign(
     {
       id: user._id,
@@ -66,7 +66,7 @@ async function login(req, res) {
     }
   );
   return res.status(200).json({
-    sucess: true,
+    success: true,
     message: 'Auth successful!',
     token,
     userData: {
@@ -120,11 +120,11 @@ async function updateUser(req, res) {
     lastName: body.lastName,
     email: body.email,
     updatedAt: Date.now()
-  }, { useFindAndModify: false, new: true },);
+  }, { useFindAndModify: false, new: true });
 
-  if (!updatedUser) return res.status(400).send({ sucess: false, message: 'Something went wrong' });
+  if (!updatedUser) return res.status(400).send({ success: false, message: 'Something went wrong' });
   else return res.status(201).send({
-    sucess: true,
+    success: true,
     message: 'Updated successfuly',
     userData: {
       userId: updatedUser._id,
@@ -148,7 +148,7 @@ async function updateUserPassword(req, res) {
   // find that user
   const user = await User.findOne({ email: decoded.email });
   const status = await bcrypt.compare(req.body.oldPassword, user.password);
-  if (!status) return res.status(403).json({ sucess: false, message: 'Wrong password' });
+  if (!status) return res.status(403).json({ success: false, message: 'Wrong password' });
   else {
     const newPassword = await bcrypt.hash(req.body.newPassword, salt);
     const updatedUser = await User.findByIdAndUpdate({ _id: decoded.id }, {
@@ -156,8 +156,8 @@ async function updateUserPassword(req, res) {
       updatedAt: Date.now()
     }, { useFindAndModify: false });
 
-    if (!updatedUser) return res.status(400).send({ sucess: false, message: 'Something went wrong' });
-    else return res.status(201).send({ sucess: true, message: 'Successfully changed password' });
+    if (!updatedUser) return res.status(400).send({ success: false, message: 'Something went wrong' });
+    else return res.status(201).send({ success: true, message: 'Successfully changed password' });
   }
 }
 
