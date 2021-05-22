@@ -4,7 +4,7 @@
       <div class="create-content-header">
         <h2>Create new Password Vault</h2>
         <div @click="closeModal">
-          <span class="far fa-times-circle fa-2x close-create-btn"></span>
+          <span class="far fa-times-circle fa-2x close-create-btn" />
         </div>
       </div>
       <validation-observer v-slot="{ handleSubmit }">

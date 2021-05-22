@@ -1,6 +1,6 @@
 <template>
   <div class="loader">
-    <i class="fas fa-spinner slow-spin"></i>
+    <i class="fas fa-spinner slow-spin" />
   </div>
 </template>
 
