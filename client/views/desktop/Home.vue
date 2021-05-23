@@ -8,10 +8,10 @@
         </p>
         <a href="/register">Get Started</a>
       </div>
-      <img class="first-section-img" src="../../assets/images/undraw_Safe_re_kiil.svg" alt="work-img">
+      <img class="first-section-img" src="../../assets/images/undraw_Safe_re_kiil.svg" alt="work-img" />
     </div>
     <div class="second-section">
-      <img class="second-section-img" src="../../assets/images/undraw_Portfolio_re_qwm5.svg" alt="work-img">
+      <img class="second-section-img" src="../../assets/images/undraw_Portfolio_re_qwm5.svg" alt="work-img" />
       <div class="second-section-text">
         <h1>How it works?</h1>
         <p>

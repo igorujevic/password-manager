@@ -2,7 +2,7 @@
   <button v-on="$listeners" :class="{ primary, rounded }" class="button">
     <div class="button-container">
       <span v-if="showIcon(icon)" class="icon mr-s">
-        <i :class="icon"></i>
+        <i :class="icon" />
       </span>
       <span class="text">{{ text }}</span>
     </div>

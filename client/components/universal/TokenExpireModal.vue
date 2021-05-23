@@ -2,7 +2,7 @@
   <modal name="token-expire-modal" classes="token-expire-modal" :click-to-close="false">
     <h1>Token expired</h1>
     <div @click="closeModal">
-      <span class="far fa-times-circle fa-2x close-create-btn"></span>
+      <span class="far fa-times-circle fa-2x close-create-btn" />
     </div>
     <validation-observer v-slot="{ handleSubmit }">
       <form @submit.prevent="handleSubmit(login)" class="eager form-container">

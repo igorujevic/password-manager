@@ -1,12 +1,12 @@
 <template>
   <div class="learn-more-card">
     <div class="learn-more-card-img">
-      <img src="../../../assets/images/secure-card-img.png" alt="leran-more-card-img">
+      <img src="../../../assets/images/secure-card-img.png" alt="leran-more-card-img" />
     </div>
     <div class="learn-more-card-content">
       <h3>Lorem ipsum dolor sit.</h3>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos!</p>
-      <a href="/">Learn more <span class="fas fa-chevron-right"></span></a>
+      <a href="/">Learn more <span class="fas fa-chevron-right" /></a>
     </div>
   </div>
 </template>
