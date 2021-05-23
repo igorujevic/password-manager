@@ -33,6 +33,8 @@ const mutations = {
   logout(state) {
     state.status = '';
     state.token = '';
+    state.user = {};
+    localStorage.removeItem('token');
   },
   saveUserData(state, userData) {
     state.user = userData;
@@ -41,6 +43,7 @@ const mutations = {
     state.status = '';
     state.token = '';
     state.user = {}
+    localStorage.removeItem('token');
   }
 };
 

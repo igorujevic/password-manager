@@ -71,15 +71,17 @@ export default {
     window.removeEventListener("resize", this.onResize);
   },
   async beforeCreate() {
-    try {
-            await auth.verify({
-              headers: {
-                Authorization: `Bearer ${localStorage.token}`
-              }
-            });
-          } catch (_) {
-            this.$modal.show("token-expire-modal");
+    if(localStorage.token) {
+      try {
+        await auth.verify({
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`
           }
+        });
+      } catch (_) {
+        this.$modal.show("token-expire-modal");
+      }
+    }
   },
   components: {
     DesktopLayout,
