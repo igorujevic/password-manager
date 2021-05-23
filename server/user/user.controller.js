@@ -189,10 +189,6 @@ async function deleteUserAccount(req, res) {
     const { id } = jwt.verify(token, AUTH_JWT_SECRET);
     const user = await User.findById({ _id: id });
 
-    console.log("Param user id: ", userId);
-    console.log("Token user id: ", user._id);
-
-    // here remove
     if (userId === user._id.toString()) {
       let deleted = await User.findByIdAndRemove({ _id: userId })
       if (!deleted) return res.status(404).send({ success: false, message: `Error while trying to delete user with id(${userId}).` })
