@@ -1,5 +1,5 @@
 <template>
-  <button v-on="$listeners" :class="{ primary, rounded }" class="button">
+  <button v-on="$listeners" :class="{ primary, rounded, error }" class="button">
     <div class="button-container">
       <span v-if="showIcon(icon)" class="icon mr-s">
         <i :class="icon" />
@@ -14,6 +14,10 @@ export default {
   name: "base-button",
   props: {
     primary: {
+      type: Boolean,
+      default: false
+    },
+    error: {
       type: Boolean,
       default: false
     },
@@ -86,6 +90,26 @@ export default {
   .text {
     transition: 0.25s ease;
     color: $white;
+  }
+}
+
+.error {
+  border-color: $error;
+  background-color: $white;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: $error;
+
+    .icon,
+    .text {
+      color: $white;
+    }
+  }
+  .icon,
+  .text {
+    transition: 0.25s ease;
+    color: $error;
   }
 }
 

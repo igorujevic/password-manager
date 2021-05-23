@@ -10,7 +10,8 @@ const url = {
   updateUserData: '/users',
   updatePassword: '/users/password',
   getAllUsers: '/users',
-  deleteUser: '/users'
+  deleteUser: '/users',
+  deleteAccount: "/users/delete-account"
 };
 
 function register(userData) {
@@ -37,6 +38,10 @@ function updatePassword(updateData, params) {
   return axios.put(`http://localhost:3000${baseURL}${url.updatePassword}`, updateData, params);
 }
 
+function deleteAccount(userId, params) {
+  return axios.delete(`http://localhost:3000${baseURL}${url.deleteAccount}/${userId}`, params);
+}
+
 // For Admin
 function getAllUsers(params) {
   return axios.get(`http://localhost:3000${baseURL}${url.getAllUsers}`, params);
@@ -53,6 +58,7 @@ export default {
   getUserData,
   updateUserData,
   updatePassword,
+  deleteAccount,
   getAllUsers,
   deleteUser
 };

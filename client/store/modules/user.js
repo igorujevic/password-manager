@@ -20,6 +20,9 @@ const actions = {
   },
   saveUserData({ commit }, userData) {
     commit('saveUserData', userData);
+  },
+  deleteUser({ commit }) {
+    commit('deleteUser');
   }
 };
 
@@ -33,6 +36,11 @@ const mutations = {
   },
   saveUserData(state, userData) {
     state.user = userData;
+  },
+  deleteUser(state) {
+    state.status = '';
+    state.token = '';
+    state.user = {}
   }
 };
 

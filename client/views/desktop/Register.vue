@@ -96,6 +96,7 @@ export default {
   }),
   methods: {
     ...mapActions('user', ['setToken']),
+    ...mapActions('user', ['saveUserData']),
     register() {
       if (this.password !== this.repeat) {
         this.message = 'Repeat password correctly';
@@ -109,6 +110,7 @@ export default {
         })
         .then(({ data }) => {
           localStorage.setItem('token', data.token);
+          this.saveUserData(data.userData);
           this.setToken(data.token);
           this.$notify({
             type: 'success',
@@ -117,7 +119,7 @@ export default {
           });
           this.$router.push({ name: 'Dashboard' });
         })
-        .catch(({ response: { data, status } }) => {
+        .catch(({response: {data, status}}) => {
           this.message = status >= 400 && status < 500 ? `${data.message}` : 'Something went wrong. Try again.';
         })
         .finally(() => {

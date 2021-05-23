@@ -45,8 +45,16 @@ async function register(req, res) {
   return res.status(200).json({
     success: true,
     message: 'User registered',
-    newUser,
-    token
+    token,
+    userData: {
+      userId: newUser._id,
+      username: newUser.username,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      createdAt: newUser.createdAt,
+      admin: newUser.admin
+    }
   });
 }
 
@@ -180,6 +188,9 @@ async function deleteUserAccount(req, res) {
   try {
     const { id } = jwt.verify(token, AUTH_JWT_SECRET);
     const user = await User.findById({ _id: id });
+
+    console.log("Param user id: ", userId);
+    console.log("Token user id: ", user._id);
 
     // here remove
     if (userId === user._id.toString()) {
