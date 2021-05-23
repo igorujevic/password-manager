@@ -130,8 +130,7 @@ export default {
           });
       })
       .catch(() => {
-        this.logoutUser();
-        this.$router.push({ name: "Login" });
+        this.$modal.show("token-expire-modal");
       });
   },
   components: {

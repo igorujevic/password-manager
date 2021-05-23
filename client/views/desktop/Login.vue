@@ -71,8 +71,9 @@ export default {
         password: this.password
       })
         .then(({ data }) => {
-          this.saveUserData(data.userData);
+          localStorage.setItem('token', data.token);
           this.setToken(data.token);
+          this.saveUserData(data.userData);
           this.$notify({
             type: 'success',
             text: 'You are logged in.',
