@@ -163,13 +163,38 @@ async function updateUserPassword(req, res) {
 }
 
 async function deleteUser(req, res) {
-  if(!req.user.admin) return res.status(403).send({ success: false, message: 'Forbidden. Only for admin.' });
+  if (!req.user.admin) return res.status(403).send({ success: false, message: 'Forbidden. Only for admin.' });
 
   const userId = req.params.id;
 
   let deleted = await User.findByIdAndRemove({ _id: userId })
-  if(!deleted) return res.status(404).send({success: false, message: `Error while trying to delete user with id(${userId}).`})
+  if (!deleted) return res.status(404).send({ success: false, message: `Error while trying to delete user with id(${userId}).` })
   else return res.status(200).send({ success: true, message: `User with id(${userId}) deleted.` });
+}
+
+async function deleteUserAccount(req, res) {
+  const userId = req.params.id;
+  const token = req.headers.authorization.split(' ')[1];
+  if (!token) return res.status(404).send({ success: false, message: 'Token is missing' });
+
+  try {
+    const { id } = jwt.verify(token, AUTH_JWT_SECRET);
+    const user = await User.findById({ _id: id });
+
+    // here remove
+    if (userId === user._id.toString()) {
+      let deleted = await User.findByIdAndRemove({ _id: userId })
+      if (!deleted) return res.status(404).send({ success: false, message: `Error while trying to delete user with id(${userId}).` })
+      else return res.status(200).send({ success: true, message: `User with id(${userId}) deleted.` });
+    }
+    else {
+      return res.status(404).send({ success: false, message: `Error while trying to delete user with id(${userId}). Token and user id are not matching.` })
+    }
+  } catch (error) {
+    return res.status(404).send({ success: false, message: `Error while trying to delete user with id(${userId}). Token and user id are not matching.` })
+  }
+
+
 }
 
 module.exports = {
@@ -180,5 +205,6 @@ module.exports = {
   updateUser,
   updateUserPassword,
   verify,
-  deleteUser
+  deleteUser,
+  deleteUserAccount
 };

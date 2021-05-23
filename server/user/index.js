@@ -14,7 +14,8 @@ router
   .get('/:id', ctrl.getUserData)
   .put('/', ctrl.updateUser)
   .put('/password', ctrl.updateUserPassword)
-  .delete('/:id', ctrl.deleteUser);
+  .delete('/:id', ctrl.deleteUser)
+  .delete('/delete-account/:id', ctrl.deleteUserAccount);
 
 module.exports = {
   path: '/users', router
