@@ -28,7 +28,7 @@ const routes = [
     name: 'Dashboard',
     components: {
       desktop: Dashboard,
-      mobile: Dashboard
+      mobile: HomeMobile
     },
     meta: {
       requiresAuth: true
@@ -39,7 +39,7 @@ const routes = [
     name: 'Account',
     components: {
       desktop: Account,
-      mobile: Account
+      mobile: HomeMobile
     },
     meta: {
       requiresAuth: true
@@ -50,7 +50,7 @@ const routes = [
     name: 'ChangePassword',
     components: {
       desktop: ChangePassword,
-      mobile: NotFound
+      mobile: HomeMobile
     },
     meta: {
       requiresAuth: true
@@ -61,7 +61,7 @@ const routes = [
     name: 'UpdateUserData',
     components: {
       desktop: UpdateUserData,
-      mobile: NotFound
+      mobile: HomeMobile
     },
     meta: {
       requiresAuth: true
@@ -72,14 +72,14 @@ const routes = [
     name: 'AdminDashboard',
     components: {
       desktop: Admin,
-      mobile: NotFound
+      mobile: HomeMobile
     },
     meta: {
       requiresAuth: true,
       requiresAdmin: true
     },
     beforeEnter: (to, from, next) => {
-      if(store.getters['user/isLoggedIn'] && store.getters['user/isAdmin']) next();
+      if (store.getters['user/isLoggedIn'] && store.getters['user/isAdmin']) next();
       else if (store.getters['user/isLoggedIn']) next("/dashboard")
       else next("/login");
     }
@@ -89,7 +89,7 @@ const routes = [
     name: 'Register',
     components: {
       desktop: Register,
-      mobile: Register
+      mobile: HomeMobile
     }
   },
   {
@@ -97,7 +97,7 @@ const routes = [
     name: 'Login',
     components: {
       desktop: Login,
-      mobile: Login
+      mobile: HomeMobile
     }
   },
   {
@@ -108,7 +108,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     components: {
       desktop: NotFound,
-      mobile: NotFound
+      mobile: HomeMobile
     }
   }
 ];
@@ -120,7 +120,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if(to.fullPath === '/' && store.getters['user/isLoggedIn'] && store.getters['user/isAdmin']) {
+  if (to.fullPath === '/' && store.getters['user/isLoggedIn'] && store.getters['user/isAdmin']) {
     next('/admin-dashboard');
     return;
   }
@@ -131,11 +131,11 @@ router.beforeEach((to, from, next) => {
   }
 
   if ((to.fullPath === '/login' || to.fullPath === '/register') && store.getters['user/isLoggedIn']) {
-    if(!store.getters['user/isAdmin']) {
+    if (!store.getters['user/isAdmin']) {
       next('/dashboard');
       return;
     }
-    if(store.getters['user/isAdmin']) {
+    if (store.getters['user/isAdmin']) {
       next('/admin-dashboard');
       return;
     }
@@ -143,7 +143,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters['user/isLoggedIn']) {
-      if(to.fullPath !== "/admin-dashboard" && store.getters['user/isAdmin']) {
+      if (to.fullPath !== "/admin-dashboard" && store.getters['user/isAdmin']) {
         next("/admin-dashboard");
         return;
       }
