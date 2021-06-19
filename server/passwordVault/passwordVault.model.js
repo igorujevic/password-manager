@@ -1,16 +1,18 @@
 'use strict';
 
-// const { AUTH_SALT_ROUNDS, AUTH_JWT_SECRET } = process.env;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PasswordVault = mongoose.model('PasswordVault', new Schema({
   pageUrl: {
-    type: String
+    type: String,
+    required: true
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    minlength: 1,
+    maxlength: 50
   },
   password: {
     type: String,
@@ -25,7 +27,8 @@ const PasswordVault = mongoose.model('PasswordVault', new Schema({
     type: Date
   },
   userId: {
-    type: Schema.Types.ObjectId, ref: 'User'
+    type: Schema.Types.ObjectId, ref: 'User',
+    required: true,
   }
 }));
 
