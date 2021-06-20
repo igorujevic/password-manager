@@ -1,6 +1,6 @@
 "use strict";
 
-const { AUTH_JWT_SECRET } = process.env;
+const { AUTH_SECRET } = process.env;
 const CryptoJS = require("crypto-js");
 const PasswordVault = require("./passwordVault.model");
 
@@ -8,7 +8,7 @@ async function create(req, res) {
   // get user from saved user in req
   const user = req.user;
   const key512Bits1000Iterations = CryptoJS.PBKDF2(
-    AUTH_JWT_SECRET,
+    AUTH_SECRET,
     user.username,
     {
       keySize: 512 / 32,
@@ -44,7 +44,7 @@ async function getAll(req, res) {
   // get user id from saved user in req
   const user = req.user;
   const key512Bits1000Iterations = CryptoJS.PBKDF2(
-    AUTH_JWT_SECRET,
+    AUTH_SECRET,
     user.username,
     {
       keySize: 512 / 32,
@@ -81,7 +81,7 @@ async function update(req, res) {
   const paramsId = req.params.id;
   const body = req.body;
   const key512Bits1000Iterations = CryptoJS.PBKDF2(
-    AUTH_JWT_SECRET,
+    AUTH_SECRET,
     user.username,
     {
       keySize: 512 / 32,

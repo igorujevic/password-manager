@@ -1,5 +1,5 @@
 'use strict';
-const { AUTH_JWT_SECRET } = process.env;
+const { AUTH_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const User = require('../../user/user.model');
 
@@ -8,7 +8,7 @@ async function authenticate(req, res, next) {
   const token = authHeader && authHeader.split(' ')[0] && authHeader.split(' ')[1];
   if (!token) res.status(401).json({ message: 'Unauthorized!' });
   try {
-    const { id } = jwt.verify(token, AUTH_JWT_SECRET);
+    const { id } = jwt.verify(token, AUTH_SECRET);
     const user = await User.findById({ _id: id });
     req.user = user;
     next();

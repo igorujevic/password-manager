@@ -27,7 +27,7 @@
     </div>
     <div class="user-data delete-account">
       <p>Delete account</p>
-      <base-button @click="deleteAccount"  error rounded text="Change password" class="account-page-delete-btn" />
+      <base-button @click="deleteAccount"  error rounded text="Delete account" class="account-page-delete-btn" />
     </div>
   </div>
 </template>

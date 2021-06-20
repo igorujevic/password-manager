@@ -1,6 +1,6 @@
 'use strict';
 
-const { AUTH_JWT_SECRET, AUTH_SALT_ROUNDS } = process.env;
+const { AUTH_SECRET, AUTH_SALT_ROUNDS } = process.env;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateRandomString } = require('../helpers/functions');
@@ -24,7 +24,7 @@ async function register(req, res) {
     email,
     password: await bcrypt.hash(password, salt),
     admin: false,
-    active: false,
+    active: true,
     createdAt: Date.now()
   });
   await newUser.save();
@@ -34,7 +34,7 @@ async function register(req, res) {
       id: newUser._id,
       email: newUser.email
     },
-    AUTH_JWT_SECRET,
+    AUTH_SECRET,
     {
       expiresIn: '3h'
     }
@@ -66,7 +66,7 @@ async function login(req, res) {
       id: user._id,
       email: user.email
     },
-    AUTH_JWT_SECRET,
+    AUTH_SECRET,
     {
       expiresIn: '3h'
     }
@@ -91,7 +91,7 @@ async function verify(req, res) {
   const token = req.headers.authorization.split(' ')[1];
   if (!token) return res.status(404).send({ success: false, message: 'Token is missing' });
   try {
-    const decoded = jwt.verify(token, AUTH_JWT_SECRET);
+    const decoded = jwt.verify(token, AUTH_SECRET);
     return res.status(200).send(decoded);
   } catch (err) {
     return res.status(401).send(err);
@@ -117,7 +117,7 @@ async function updateUser(req, res) {
   // get token from header
   const token = req.headers.authorization.split(' ')[1];
   // decode token
-  const decoded = jwt.decode(token, AUTH_JWT_SECRET);
+  const decoded = jwt.decode(token, AUTH_SECRET);
   // request body
   const body = req.body;
 
@@ -150,7 +150,7 @@ async function updateUserPassword(req, res) {
   const token = req.headers.authorization.split(' ')[1];
   if (!token) return res.status(403).send({ success: false, message: 'Forbidden' });
   // decode token
-  const decoded = jwt.decode(token, AUTH_JWT_SECRET);
+  const decoded = jwt.decode(token, AUTH_SECRET);
   // find that user
   const user = await User.findOne({ email: decoded.email });
   const status = await bcrypt.compare(req.body.oldPassword, user.password);
@@ -183,7 +183,7 @@ async function deleteUserAccount(req, res) {
   if (!token) return res.status(404).send({ success: false, message: 'Token is missing' });
 
   try {
-    const { id } = jwt.verify(token, AUTH_JWT_SECRET);
+    const { id } = jwt.verify(token, AUTH_SECRET);
     const user = await User.findById({ _id: id });
 
     if (userId === user._id.toString()) {
