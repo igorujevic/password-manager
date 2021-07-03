@@ -1,5 +1,5 @@
 <template>
-  <modal name="edit-pv-modal" classes="pv-modal">
+  <modal name="edit-pv-modal" classes="pv-modal" :click-to-close="false">
     <div class="edit-content">
       <div class="edit-content-header">
         <h2>Edit Password Vault</h2>
@@ -20,7 +20,7 @@
             class=""
           >
             <base-field
-              v-model.trim="pv.pageUrl"
+              v-model.trim="url"
               :error="errors[0]"
               type="text"
               placeholder="PageUrl"
@@ -34,7 +34,7 @@
             class=""
           >
             <base-field
-              v-model="pv.name"
+              v-model="name"
               :error="errors[0]"
               type="text"
               placeholder="Name"
@@ -48,7 +48,7 @@
             class="mt-xs"
           >
             <base-field
-              v-model="pv.password"
+              v-model="psw"
               :error="errors[0]"
               type="password"
               placeholder="Password"
@@ -86,7 +86,10 @@ export default {
   },
   data: () => ({
     isLoading: false,
-    message: ""
+    message: "",
+    url: "",
+    psw: "",
+    name: ""
   }),
   computed: {
     ...mapGetters("user", ["authToken"])
@@ -98,9 +101,9 @@ export default {
         .update(
           this.pv._id,
           {
-            pageUrl: this.pv.pageUrl,
-            name: this.pv.name,
-            password: this.pv.password
+            pageUrl: this.url,
+            name: this.name,
+            password: this.psw
           },
           {
             headers: {
@@ -111,9 +114,9 @@ export default {
         .then(({ data }) => {
           this.$emit("passwordVaultEdited", {
             _id: data.updatedPasswordVault._id,
-            pageUrl: this.pv.pageUrl,
-            name: this.pv.name,
-            password: this.pv.password
+            pageUrl: this.url,
+            name: this.name,
+            password: this.psw
           });
           this.$notify({
             type: "success",
@@ -135,6 +138,18 @@ export default {
     },
     closeModal() {
       this.$modal.hide("edit-pv-modal");
+      this.name = this.pv.name;
+      this.url = this.pv.pageUrl;
+      this.psw = this.pv.password;
+    }
+  },
+  watch: {
+    pv() {
+      if(this.pv) {
+        this.name = this.pv.name;
+        this.url = this.pv.pageUrl;
+        this.psw = this.pv.password;
+      }
     }
   },
   components: {

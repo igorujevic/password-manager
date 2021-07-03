@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateRandomString } = require('../helpers/functions');
 const User = require('./user.model');
+const PasswordVault = require('../passwordVault/passwordVault.model');
 
 const round = parseInt(AUTH_SALT_ROUNDS);
 
@@ -171,10 +172,10 @@ async function deleteUser(req, res) {
   if (!req.user.admin) return res.status(403).send({ success: false, message: 'Forbidden. Only for admin.' });
 
   const userId = req.params.id;
-
-  let deleted = await User.findByIdAndRemove({ _id: userId })
+  const pvs = await PasswordVault.deleteMany({ userId });
+  let deleted = await User.findByIdAndRemove({ _id: userId }, { useFindAndModify: false })
   if (!deleted) return res.status(404).send({ success: false, message: `Error while trying to delete user with id(${userId}).` })
-  else return res.status(200).send({ success: true, message: `User with id(${userId}) deleted.` });
+  return res.status(200).send({ success: true, deleteCount: pvs.deletedCount, message: `User with id(${userId}) deleted.` });
 }
 
 async function deleteUserAccount(req, res) {
@@ -187,7 +188,8 @@ async function deleteUserAccount(req, res) {
     const user = await User.findById({ _id: id });
 
     if (userId === user._id.toString()) {
-      let deleted = await User.findByIdAndRemove({ _id: userId })
+      await PasswordVault.deleteMany({ userId });
+      let deleted = await User.findByIdAndRemove({ _id: userId }, { useFindAndModify: false })
       if (!deleted) return res.status(404).send({ success: false, message: `Error while trying to delete user with id(${userId}).` })
       else return res.status(200).send({ success: true, message: `User with id(${userId}) deleted.` });
     }

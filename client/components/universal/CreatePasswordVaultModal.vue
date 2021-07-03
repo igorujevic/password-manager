@@ -1,5 +1,5 @@
 <template>
-  <modal name="create-pv-modal" classes="pv-modal">
+  <modal name="create-pv-modal" classes="pv-modal" :click-to-close="false">
     <div class="create-content">
       <div class="create-content-header">
         <h2>Create new Password Vault</h2>

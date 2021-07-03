@@ -18,7 +18,7 @@
         </li>
       </ul>
       <div>
-        Total saved passwords: {{passwords.length}}
+        Total saved passwords: {{passwords}}
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@ export default {
   data: () => ({
     loading: true,
     users: [],
-    passwords: []
+    passwords: 0
   }),
   computed: {
     ...mapGetters('user', ['authToken'])
@@ -55,6 +55,7 @@ export default {
           }
         }).then(({data}) => {
           this.users = remove(this.users, n => n._id !== id);
+          this.passwords = this.passwords - data.deleteCount;
           this.$notify({
             type: "success",
             text: data.message,
@@ -86,7 +87,7 @@ export default {
             Authorization: `Bearer ${this.authToken}`
           }
         }).then(({data}) => {
-          this.passwords = data.passwords
+          this.passwords = data.count
         }).catch(() => {
           this.$notify({
             type: 'error',

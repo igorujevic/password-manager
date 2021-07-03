@@ -100,13 +100,13 @@ export default {
           this.saveUserData(data.userData);
           this.$notify({
             type: 'success',
-            text: 'Password changed successfuly.',
+            text: 'User data changed successfuly.',
             duration: 3000
           });
           this.$router.push({ name: 'Account' });
         })
         .catch(({ response: { data, status } }) => {
-          this.message = status >= 400 && status < 500 ? `${data.message}. Old password is wrong.` : 'Something went wrong. Try again.';
+          this.message = status >= 400 && status < 500 ? `${data.message}. Try again later.` : 'Something went wrong. Try again.';
         })
         .finally(() => {
           this.isLoading = false;

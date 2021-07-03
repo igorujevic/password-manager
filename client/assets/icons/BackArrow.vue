@@ -13,7 +13,8 @@ export default {
   }),
   methods: {
     goBack() {
-      this.$router.go(-1);
+      if(this.$router.currentRoute.path === "/account") this.$router.push({ name: "Dashboard" });
+      else this.$router.go(-1);
     }
   }
 };

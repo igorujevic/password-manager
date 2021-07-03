@@ -132,7 +132,7 @@ async function deleteOne(req, res) {
 async function getAllAdmin(req, res) {
   if (!req.user.admin) return res.status(403).send({ success: false, message: 'Forbidden. Only for admin!' });
   const passwords = await PasswordVault.find();
-  return res.send({ success: true, passwords });
+  return res.send({ success: true, passwords: passwords, count: passwords.length });
 }
 
 module.exports = {

@@ -70,8 +70,17 @@ export default {
       this.allPasswords.unshift(data);
     },
     saveEditedPasswordVault(data) {
-      this.allPasswords.map(pv => {
-        if (pv._id == data._id) pv = data;
+      this.allPasswords = this.allPasswords.map(pv => {
+        if (pv._id == data._id) {
+          return {
+            ...pv,
+            _id: data._id,
+            name: data.name,
+            pageUrl: data.pageUrl,
+            password: data.password
+          }
+        }
+        else return pv;
       });
     },
     removePasswordVaultFromArray(id) {
