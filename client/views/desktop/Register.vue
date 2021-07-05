@@ -74,6 +74,7 @@
       </form>
     </validation-observer>
     <div v-if="message" class="register-error-message"> {{ message }} </div>
+    <p class="login-message">Already have account? Start <a href="/login">here</a>.</p>
   </div>
 </template>
 
@@ -169,8 +170,17 @@ export default {
   }
 
   .register-error-message {
-    margin: 20px 0px;
+    margin: 10px 0px 0px;
     color: $error;
+  }
+
+  .login-message {
+    margin-top: 10px;
+
+    a {
+       text-decoration: none;
+       color: $primaryColor;
+     }
   }
 }
 

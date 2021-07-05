@@ -145,6 +145,10 @@ export default {
     width: calc(100% - 10px);
     max-height: 500px;
 
+    & ::-webkit-scrollbar {
+      display: none;
+    }
+
     li {
       padding: 5px;
       display: flex;
